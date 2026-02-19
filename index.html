@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CONTROL ROOM — Strategic Systems & Operational Intelligence</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom CSS Variables and Animations */
+    :root {
+      --background: 43 33% 93%;
+      --foreground: 0 0% 8%;
+      --primary: 0 0% 8%;
+      --primary-foreground: 43 33% 93%;
+      --border: 0 0% 8%;
+    }
+
+    /* Base styles */
+    body {
+      background-color: hsl(43, 33%, 93%);
+      color: hsl(0, 0%, 8%);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Mono', monospace !important;
+    }
+
+    .border-foreground {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    .bg-primary {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .text-primary-foreground {
+      color: hsl(43, 33%, 93%);
+    }
+
+    .bg-primary-foreground {
+      background-color: hsl(43, 33%, 93%);
+    }
+
+    .text-primary {
+      color: hsl(0, 0%, 8%);
+    }
+
+    .divide-foreground > :not([hidden]) ~ :not([hidden]) {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    /* Marquee animation */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .animate-marquee {
+      animation: marquee 30s linear infinite;
+    }
+    
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    /* Custom first letter styling */
+    .first-letter\:text-5xl::first-letter {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      float: left;
+      margin-right: 0.5rem;
+      line-height: 1;
+    }
+
+    /* Transitions */
+    .transition-opacity {
+      transition-property: opacity;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    .transition-colors {
+      transition-property: background-color, border-color, color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 200ms;
+    }
+
+    .hover\:opacity-60:hover {
+      opacity: 0.6;
+    }
+
+    .hover\:opacity-70:hover {
+      opacity: 0.7;
+    }
+
+    .hover\:opacity-90:hover {
+      opacity: 0.9;
+    }
+
+    .hover\:bg-foreground:hover {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .hover\:text-background:hover {
+      color: hsl(43, 33%, 93%);
+    }
+    
+    /* Image styling */
+    .object-cover {
+      object-fit: cover;
+    }
+    
+    /* Tactical image border */
+    .tactical-image {
+      border: 2px solid hsl(0, 0%, 8%);
+      position: relative;
+    }
+    
+    .tactical-image::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border: 1px solid hsl(43, 33%, 93%);
+      pointer-events: none;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Main Container -->
+  <div class="min-h-screen bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)]">
+
+    <!-- ============================================ -->
+    <!-- HEADER COMPONENT (from Header.tsx)          -->
+    <!-- ============================================ -->
+    
+    <!-- TopBar with REAL-TIME CLOCK -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="flex items-center justify-between px-4 md:px-8 py-2 text-xs font-mono tracking-widest uppercase">
+        <span id="live-clock">LOADING...</span>
+        <span>ISSUE 01</span>
+      </div>
+      <div class="text-center py-2 border-t border-[hsl(0,0%,8%)]">
+        <p class="text-xs font-mono tracking-[0.3em] uppercase">
+          Strategic Systems & Operational Intelligence
+        </p>
+      </div>
+    </div>
+
+    <!-- Masthead -->
+    <div class="text-center py-8 md:py-12 border-b border-[hsl(0,0%,8%)]">
+      <h1 class="font-['Playfair_Display'] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+        THE CONTROL<br />ROOM
+      </h1>
+    </div>
+
+    <!-- NavBar -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-3 gap-2 text-xs font-mono tracking-wider uppercase">
+        <div class="flex items-center gap-2">
+          <span>📍</span> <span>TACTICAL ANALYSIS</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>📞</span> <span>CALCULATED ACTION PLAN</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>✉️</span> <span>OPTIMISED RESULTS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IndexSection -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
+
+        <!-- Column 1 -->
+        <div class="px-4 md:px-8 py-4">
+          <h3 class="font-['Playfair_Display'] text-lg font-bold mb-2">INDEX</h3>
+          <div class="flex flex-col gap-2">
+            <a href="how-we-work.html" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
+              HOW WE WORK
+            </a>
+            <a href="how-we-work.html#problem" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
+              PROBLEM
+            </a>
+            <a href="how-we-work.html#solution" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
+              SOLUTION
+            </a>
+            <a href="how-we-work.html#outcome" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
+              OUTCOME
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="px-4 md:px-8 py-4">
+          <h3 class="font-['Playfair_Display'] text-sm font-bold mb-2 uppercase">
+            Book an Appointment
+          </h3>
+          <div class="flex flex-col gap-2">
+            <a href="#book-appointment" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity">
+              SCHEDULE CONSULTATION
+            </a>
+            <a href="#request-a-call" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity">
+              REQUEST STRATEGY CALL
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 3 -->
+        <div class="px-4 md:px-8 py-4">
+          <h3 class="font-['Playfair_Display'] text-sm font-bold mb-2 uppercase">
+            Our Work
+          </h3>
+          <div class="flex flex-col gap-2">
+            <a href="archives.html" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
+              ARCHIVES
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HERO SECTION (from HeroSection.tsx)         -->
+    <!-- ============================================ -->
+
+    <section class="border-b border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        
+        <!-- Left Column -->
+        <div class="p-6 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)]">
+          <p class="text-xs font-mono tracking-widest uppercase mb-4">
+            BRIEFING NOTES
+          </p>
+
+          <h2 class="font-['Playfair_Display'] text-6xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-8">
+            ONE<br />STORY.<br />ONE<br />SYSTEM.
+          </h2>
+
+          <blockquote class="font-['Playfair_Display'] italic text-lg md:text-xl mb-8 border-l-2 border-[hsl(0,0%,8%)] pl-4">
+            "Visibility without structure collapses.<br />We build both."
+          </blockquote>
+
+          <!-- HERO IMAGE - with tactical styling -->
+          <div class="w-full aspect-video tactical-image overflow-hidden" id="book-appointment">
+            <img 
+              src="assets/images/hero-image.jpg" 
+              alt="Strategic documents on control room desk"
+              class="w-full h-full object-cover"
+              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-[hsl(0,0%,15%)] flex items-center justify-center\'><span class=\'text-[hsl(43,33%,93%)] text-xs font-mono\'>[HERO IMAGE PENDING]</span></div>'"
+            >
+          </div>
+
+          <div class="flex justify-between mt-4 text-[10px] font-mono tracking-widest uppercase">
+            <span>FIG 1.1: SYSTEM ARCHITECTURE</span>
+            <span>PHOTO: ARCHIVE</span>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="p-6 md:p-10 lg:p-12">
+          <p class="text-xs font-mono tracking-widest uppercase mb-6">
+            BRIEFING NOTES
+          </p>
+
+          <div class="mb-10 space-y-6">
+            <p class="font-['DM_Sans'] text-sm leading-relaxed first-letter:text-5xl first-letter:font-['Playfair_Display'] first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+              Here at The Control Room, we combine the force of visual media and
+              technology to shape, sharpen, and elevate your story. We operate as
+              two parallel units working in complete alignment.
+            </p>
+
+            <p class="font-['DM_Sans'] text-sm leading-relaxed">
+              Communication and Infrastructure. Creative and system. Not separate
+              services. One unified alliance built around your objective.
+            </p>
+
+            <p class="font-['DM_Sans'] text-sm leading-relaxed">
+              We do not believe in generic marketing aimed at "everyone". We
+              identify the exact audience that matters to you. We study them. We
+              understand where they exist, how they think, and what moves them.
+              Then we build communication that speaks directly to them.
+            </p>
+
+            <p class="font-['DM_Sans'] text-sm leading-relaxed">
+              Beyond visibility, we build the systems that welcome your people in.
+              Websites. Platforms. Funnels. Backend structures. Operational flows.
+            </p>
+
+            <p class="font-['DM_Sans'] text-sm leading-relaxed">
+              If there are technical gaps, inefficiencies, or revenue leaks in
+              your ecosystem, we identify them and fix them.
+            </p>
+
+            <p class="font-['DM_Sans'] text-sm leading-relaxed font-semibold">
+              In short, <br />
+              We build both <br />
+              A clear narrative and a working system.<br />
+            </p>
+          </div>
+
+          <!-- Appointment Card -->
+          <div class="w-full aspect-video">
+            <div class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] p-6 h-full flex flex-col justify-between">
+              
+              <div>
+                <h3 class="font-['Playfair_Display'] text-xl font-bold mb-3">
+                  BOOK AN APPOINTMENT
+                </h3>
+
+                <p class="text-xs font-['DM_Sans'] mb-6 leading-relaxed opacity-80">
+                  Reactive strategies are no longer sufficient. The modern
+                  landscape demands predictive capability. Schedule a consultation
+                  to discuss your strategic needs.
+                </p>
+
+                <div class="space-y-3">
+                  <input type="text" placeholder="Your Name" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="John Doe" />
+                  <input type="email" placeholder="Email Address" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="john@example.com" />
+                  <input type="tel" placeholder="Phone Number" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="+91 98765 43210" />
+                  <input type="text" placeholder="dd-mm-yyyy" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="19-02-2026" />
+                </div>
+              </div>
+
+              <button class="mt-4 w-full bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)] py-2 text-xs font-mono tracking-widest uppercase hover:opacity-90 transition-opacity">
+                BOOK APPOINTMENT
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PROBLEM/SOLUTION SECTION (from ProblemSolutionSection.tsx) -->
+    <!-- ============================================ -->
+    
+    <section class="border-b border-[hsl(0,0%,8%)]">
+      
+      <!-- Two Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)] border-t border-[hsl(0,0%,8%)]">
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-3">How We Work</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
+            We diagnose. We define the objective. We build the structure. We execute with precision. 
+            We refine based on results. Strategy and systems move together. Always.
+          </p>
+          <a href="how-we-work.html" class="text-xs font-mono tracking-widest uppercase flex items-center gap-1 hover:opacity-70 transition-opacity">
+            UNDERSTAND THE FRAMEWORK <span class="text-xs">→</span>
+          </a>
+        </div>
+
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-3">Our Work</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
+            Our work spans political positioning, real estate launches, product rollouts, and system 
+            restructuring. Every engagement is built around one objective: measurable influence supported 
+            by reliable systems.
+          </p>
+          <a href="archives.html" class="text-xs font-mono tracking-widest uppercase flex items-center gap-1 hover:opacity-70 transition-opacity">
+            VIEW SELECTED ENGAGEMENTS <span class="text-xs">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- ALLIANCES SECTION (from AlliancesSection.tsx) -->
+    <!-- ============================================ -->
+    
+    <section class="py-12 border-b border-[hsl(0,0%,8%)]">
+      <div class="flex items-center gap-4 px-8 mb-8">
+        <div class="h-px flex-1 bg-[hsl(0,0%,8%)]"></div>
+        <h2 class="font-['Playfair_Display'] text-2xl md:text-3xl font-bold tracking-wider uppercase whitespace-nowrap">
+          OUR ALLIANCES
+        </h2>
+        <div class="h-px flex-1 bg-[hsl(0,0%,8%)]"></div>
+      </div>
+
+      <div class="overflow-hidden py-6">
+        <div class="flex w-max animate-marquee">
+          <!-- Alliance Logos - 14 logos as per your structure -->
+          <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTwvdGV4dD48L3N2Zz4='; this.classList.add('placeholder-logo');">
+          <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMjwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMzwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNDwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNTwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNjwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNzwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gODwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gOTwvdGV4dD48L3N2Zz4=';">
+          <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTA8L3RleHQ+PC9zdmc+';">
+          <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTE8L3RleHQ+PC9zdmc+';">
+          <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTI8L3RleHQ+PC9zdmc+';">
+          <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTM8L3RleHQ+PC9zdmc+';">
+          <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTQ8L3RleHQ+PC9zdmc+';">
+          
+          <!-- Duplicate set for seamless marquee loop -->
+          <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- STRATEGIC INTELLIGENCE (from StrategicIntelligence.tsx) -->
+    <!-- ============================================ -->
+    
+    <section class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] border-b border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 lg:grid-cols-3">
+        <div class="lg:col-span-2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+          <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight mb-6 tracking-tight text-center lg:text-left">
+            STRATEGIC<br />INTELLIGENCE
+          </h2>
+          <p class="text-sm font-['DM_Sans'] leading-relaxed opacity-80 max-w-xl mb-8 text-center lg:text-left mx-auto lg:mx-0">
+            In-depth analysis of systemic challenges facing modern organizations. Our strategic articles 
+            examine the intersection of structure, visibility, and control in complex operational environments.
+          </p>
+          <div class="text-center lg:text-left">
+            <a href="archives.html" class="border border-[hsl(43,33%,93%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(43,33%,93%)] hover:text-[hsl(0,0%,8%)] transition-colors">
+              ACCESS ARCHIVES
+            </a>
+          </div>
+        </div>
+        
+        <!-- STRATEGIC ICON -->
+        <div class="flex items-center justify-center p-8 lg:p-12">
+          <div class="w-48 h-48 md:w-56 md:h-56 tactical-image overflow-hidden rounded-none">
+            <img 
+              src="assets/strategic-icon.jpg" 
+              alt="Strategic Intelligence Icon"
+              class="w-full h-full object-cover"
+              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-[hsl(43,33%,93%)/10] flex items-center justify-center text-[hsl(43,33%,93%)/50] text-xs font-mono\'>[INTEL ICON]</div>'"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CLASSIFIEDS SECTION (from ClassifiedsSection.tsx) -->
+    <!-- ============================================ -->
+    
+    <section class="border-b border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[hsl(0,0%,8%)]">
+
+        <!-- Left - Classifieds -->
+        <div class="p-6 md:p-10">
+          <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase mb-2">CLASSIFIEDS</h2>
+          <p class="text-xs font-mono tracking-widest uppercase mb-6">FORM ID: CR-992-X</p>
+          
+          <div class="mb-6">
+            <h4 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-2">SUBMISSION GUIDELINES</h4>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
+              All inquiries are treated with strict confidentiality. Ensure all fields are completed 
+              accurately for processing. Response time: 24-48 hours.
+            </p>
+            <p class="text-xs font-mono uppercase tracking-wider mb-1">DIRECT LINE:</p>
+            <p class="text-xs font-mono mb-4">+91 7879 186506</p>
+            <p class="text-xs font-mono mb-4">thecontrolroom.agency@gmail.com</p>
+          </div>
+
+          <a href="hiring.html" class="border-2 border-[hsl(0,0%,8%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors inline-block">
+            WE ARE HIRING
+          </a>
+        </div>
+
+        <!-- Right - Submit Inquiry -->
+        <div class="p-6 md:p-10" id="request-a-call">
+          <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase mb-2">REQUEST A CALL</h2>
+          <p class="text-xs font-mono tracking-widest uppercase mb-6">FORM ID: CR-992-X</p>
+          
+          <p class="text-[10px] font-mono tracking-widest uppercase mb-4">
+            CLASSIFIED SUBMISSION FORM — CONFIDENTIAL
+          </p>
+
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-[10px] font-mono uppercase tracking-wider">FULL NAME *</label>
+                <input type="text" value="Jane Smith" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[10px] font-mono uppercase tracking-wider">EMAIL ADDRESS *</label>
+                <input type="email" value="jane.smith@example.com" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
+              </div>
+            </div>
+            <div>
+              <label class="text-[10px] font-mono uppercase tracking-wider">CONTACT NUMBER *</label>
+              <input type="tel" value="+91 98765 12345" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
+            </div>
+            <div>
+              <label class="text-[10px] font-mono uppercase tracking-wider">INQUIRY DETAILS *</label>
+              <textarea rows="4" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none resize-none">Interested in strategic consultation for our organization.</textarea>
+            </div>
+            <button class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:opacity-90 transition-opacity">
+              REQUEST A CALL
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER (from Footer.tsx)                     -->
+    <!-- ============================================ -->
+    
+    <footer class="border-t border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-xl font-bold uppercase mb-2">THE CONTROL ROOM</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70">
+            Strategic systems for organizations that demand clarity, structure, and operational control.
+          </p>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Navigation</h4>
+          <ul class="text-xs font-mono space-y-2 uppercase tracking-wider">
+            <li>
+              <a href="archives.html" class="hover:opacity-70 transition-opacity">
+                Archives
+              </a>
+            </li>
+            <li>
+              <a href="how-we-work.html" class="hover:opacity-70 transition-opacity">
+                How We Work
+              </a>
+            </li>
+            <li>
+              <a href="#book-appointment" class="hover:opacity-70 transition-opacity uppercase tracking-wider">
+                Book an Appointment
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Contact</h4>
+          <ul class="text-xs font-mono space-y-1 tracking-wider">
+            <li>+91 7879 186506</li>
+            <li>thecontrolroom.agency@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[hsl(0,0%,8%)] px-6 md:px-8 py-4">
+        <p class="text-[10px] font-mono tracking-widest uppercase text-center opacity-60">
+          © 2026 THE CONTROL ROOM. ALL RIGHTS RESERVED.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================
+    // REAL-TIME CLOCK
+    // ============================================
+    function updateClock() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).toUpperCase();
+      
+      document.getElementById('live-clock').textContent = formatted;
+    }
+    
+    // Update immediately
+    updateClock();
+    
+    // Update every second
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CONTROL ROOM — How We Work</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom CSS Variables and Animations */
+    :root {
+      --background: 43 33% 93%;
+      --foreground: 0 0% 8%;
+      --primary: 0 0% 8%;
+      --primary-foreground: 43 33% 93%;
+      --border: 0 0% 8%;
+    }
+
+    body {
+      background-color: hsl(43, 33%, 93%);
+      color: hsl(0, 0%, 8%);
+      font-family: 'DM Sans', sans-serif;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Mono', monospace !important;
+    }
+
+    .border-foreground {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    .bg-foreground {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .text-background {
+      color: hsl(43, 33%, 93%);
+    }
+
+    .hover\:bg-foreground:hover {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .hover\:text-background:hover {
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* First letter styling */
+    .first-letter\:text-5xl::first-letter {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      float: left;
+      margin-right: 0.5rem;
+      line-height: 1;
+    }
+
+    /* Transitions */
+    .transition-colors {
+      transition-property: background-color, border-color, color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 200ms;
+    }
+
+    /* Scrollable Phase Navigation */
+    .phase-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: hsl(43, 33%, 93%);
+      border-bottom: 1px solid hsl(0, 0%, 8%);
+      padding: 0.5rem 1rem;
+    }
+
+    .phase-nav-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      scrollbar-width: thin;
+      scrollbar-color: hsl(0, 0%, 8%) hsl(43, 33%, 85%);
+    }
+
+    .phase-nav-container::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .phase-nav-container::-webkit-scrollbar-track {
+      background: hsl(43, 33%, 85%);
+    }
+
+    .phase-nav-container::-webkit-scrollbar-thumb {
+      background-color: hsl(0, 0%, 8%);
+      border-radius: 0;
+    }
+
+    .phase-nav-item {
+      flex: 0 0 auto;
+      padding: 0.5rem 1rem;
+      border: 1px solid hsl(0, 0%, 8%);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .phase-nav-item:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .phase-nav-item.active {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Phase content sections */
+    .phase-section {
+      scroll-margin-top: 80px;
+    }
+
+    /* Timeline connector */
+    .phase-timeline {
+      position: relative;
+    }
+
+    .phase-timeline::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: hsl(0, 0%, 8%);
+      opacity: 0.2;
+    }
+
+    @media (min-width: 768px) {
+      .phase-timeline::before {
+        left: 3rem;
+      }
+    }
+
+    .phase-dot {
+      position: absolute;
+      left: 1.7rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: hsl(0, 0%, 8%);
+      transform: translateY(0.5rem);
+    }
+
+    @media (min-width: 768px) {
+      .phase-dot {
+        left: 2.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)]">
+
+    <!-- ── TOP BAR WITH REAL-TIME CLOCK ── -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="flex items-center justify-between px-4 md:px-8 py-2 text-xs font-mono tracking-widest uppercase">
+        <span id="live-clock">LOADING...</span>
+        <span>ISSUE 01</span>
+      </div>
+      <div class="text-center py-2 border-t border-[hsl(0,0%,8%)]">
+        <p class="text-xs font-mono tracking-[0.3em] uppercase">
+          Strategic Systems & Operational Intelligence
+        </p>
+      </div>
+    </div>
+
+    <!-- ── MASTHEAD ── -->
+    <div class="text-center py-8 md:py-12 border-b border-[hsl(0,0%,8%)]">
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mb-4">
+        ← <a href="index.html" class="hover:underline">RETURN TO BASE</a>
+      </p>
+      <h1 class="font-['Playfair_Display'] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+        THE CONTROL<br />ROOM
+      </h1>
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mt-4 opacity-50">
+        OPERATIONAL DOCTRINE — HOW WE WORK
+      </p>
+    </div>
+
+    <!-- ── OPENING STATEMENT ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-center">
+        <p class="text-xs font-mono tracking-widest uppercase opacity-50 mb-6">FIELD DOCTRINE · CR-DOC-001</p>
+        <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
+          STRATEGY<br />AND SYSTEMS<br />MOVE<br />TOGETHER.<br />ALWAYS.
+        </h2>
+      </div>
+      <div class="p-8 md:p-12 lg:p-16 flex flex-col justify-center gap-6">
+        <p class="font-['DM_Sans'] text-sm leading-relaxed first-letter:text-5xl first-letter:font-['Playfair_Display'] first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+          The Control Room was built on a different premise. Communication and infrastructure are not separate disciplines. They are two components of a single system — and they only produce results when they are designed, built, and operated together.
+        </p>
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          This is our doctrine. Every engagement follows it. No exceptions.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── STICKY PHASE NAVIGATION (SCROLLABLE) ── -->
+    <div class="phase-nav">
+      <div class="phase-nav-container">
+        <a href="#phase-01" class="phase-nav-item active" data-phase="1">01 · DIAGNOSE</a>
+        <a href="#phase-02" class="phase-nav-item" data-phase="2">02 · DEFINE</a>
+        <a href="#phase-03" class="phase-nav-item" data-phase="3">03 · ARCHITECT</a>
+        <a href="#phase-04" class="phase-nav-item" data-phase="4">04 · EXECUTE</a>
+        <a href="#phase-05" class="phase-nav-item" data-phase="5">05 · REFINE</a>
+        <a href="#problem" class="phase-nav-item">PROBLEM</a>
+        <a href="#solution" class="phase-nav-item">SOLUTION</a>
+        <a href="#outcome" class="phase-nav-item">OUTCOME</a>
+      </div>
+    </div>
+
+    <!-- ── PROCESS SECTION HEADER ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] px-4 md:px-8 py-6 flex items-center justify-between">
+      <h2 class="font-['Playfair_Display'] text-2xl md:text-3xl font-black uppercase">THE FIVE PHASES</h2>
+    </div>
+
+    <!-- ── PROCESS STEPS WITH TIMELINE DESIGN ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] phase-timeline relative">
+      
+      <!-- Phase 01 - DIAGNOSE -->
+      <div id="phase-01" class="phase-section border-b border-[hsl(0,0%,8%)] last:border-b-0 relative">
+        <div class="phase-dot"></div>
+        <div class="pl-12 md:pl-16 pr-4 md:pr-8">
+          <div class="flex items-center justify-between px-4 md:px-8 py-5 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+            <div class="flex items-center gap-6 md:gap-10">
+              <span class="text-xs font-mono tracking-widest opacity-60 w-6">01</span>
+              <span class="font-['Playfair_Display'] text-sm md:text-base font-black uppercase">DIAGNOSE</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono tracking-widest uppercase opacity-70 hidden md:block">We find what others miss.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 border-t border-[hsl(0,0%,8%)]">
+            <div class="p-6 md:p-10 border-b md:border-b-0 md:border-r border-[hsl(0,0%,8%)]">
+              <h3 class="font-['Playfair_Display'] text-2xl font-black uppercase mb-2">We find what others miss.</h3>
+              <p class="font-['DM_Sans'] text-sm leading-relaxed opacity-80">
+                Before we build anything, we read the room. We audit your current position — your communication, your systems, your gaps. Most organizations don't have a visibility problem. They have a structure problem. We find it.
+              </p>
+            </div>
+            <div class="p-6 md:p-10 flex items-end">
+              <div class="border border-[hsl(0,0%,8%)] px-4 py-3 w-full">
+                <p class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">DELIVERABLE: Situation Report</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 02 - DEFINE -->
+      <div id="phase-02" class="phase-section border-b border-[hsl(0,0%,8%)] last:border-b-0 relative">
+        <div class="phase-dot"></div>
+        <div class="pl-12 md:pl-16 pr-4 md:pr-8">
+          <div class="flex items-center justify-between px-4 md:px-8 py-5 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+            <div class="flex items-center gap-6 md:gap-10">
+              <span class="text-xs font-mono tracking-widest opacity-60 w-6">02</span>
+              <span class="font-['Playfair_Display'] text-sm md:text-base font-black uppercase">DEFINE</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono tracking-widest uppercase opacity-70 hidden md:block">One objective. No ambiguity.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 border-t border-[hsl(0,0%,8%)]">
+            <div class="p-6 md:p-10 border-b md:border-b-0 md:border-r border-[hsl(0,0%,8%)]">
+              <h3 class="font-['Playfair_Display'] text-2xl font-black uppercase mb-2">One objective. No ambiguity.</h3>
+              <p class="font-['DM_Sans'] text-sm leading-relaxed opacity-80">
+                We don't work with vague briefs. We translate your goal into a single, measurable objective. Everything we build — every decision, every asset, every system — serves that objective. Not several. One.
+              </p>
+            </div>
+            <div class="p-6 md:p-10 flex items-end">
+              <div class="border border-[hsl(0,0%,8%)] px-4 py-3 w-full">
+                <p class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">DELIVERABLE: Strategic Brief</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 03 - ARCHITECT -->
+      <div id="phase-03" class="phase-section border-b border-[hsl(0,0%,8%)] last:border-b-0 relative">
+        <div class="phase-dot"></div>
+        <div class="pl-12 md:pl-16 pr-4 md:pr-8">
+          <div class="flex items-center justify-between px-4 md:px-8 py-5 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+            <div class="flex items-center gap-6 md:gap-10">
+              <span class="text-xs font-mono tracking-widest opacity-60 w-6">03</span>
+              <span class="font-['Playfair_Display'] text-sm md:text-base font-black uppercase">ARCHITECT</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono tracking-widest uppercase opacity-70 hidden md:block">Structure before execution.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 border-t border-[hsl(0,0%,8%)]">
+            <div class="p-6 md:p-10 border-b md:border-b-0 md:border-r border-[hsl(0,0%,8%)]">
+              <h3 class="font-['Playfair_Display'] text-2xl font-black uppercase mb-2">Structure before execution.</h3>
+              <p class="font-['DM_Sans'] text-sm leading-relaxed opacity-80">
+                We design the system before we build it. Communication architecture. Technology stack. Audience mapping. Channel selection. Timelines. We don't move until the blueprint is airtight. Speed without structure is just noise.
+              </p>
+            </div>
+            <div class="p-6 md:p-10 flex items-end">
+              <div class="border border-[hsl(0,0%,8%)] px-4 py-3 w-full">
+                <p class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">DELIVERABLE: Operational Blueprint</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 04 - EXECUTE -->
+      <div id="phase-04" class="phase-section border-b border-[hsl(0,0%,8%)] last:border-b-0 relative">
+        <div class="phase-dot"></div>
+        <div class="pl-12 md:pl-16 pr-4 md:pr-8">
+          <div class="flex items-center justify-between px-4 md:px-8 py-5 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+            <div class="flex items-center gap-6 md:gap-10">
+              <span class="text-xs font-mono tracking-widest opacity-60 w-6">04</span>
+              <span class="font-['Playfair_Display'] text-sm md:text-base font-black uppercase">EXECUTE</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono tracking-widest uppercase opacity-70 hidden md:block">Precision over volume.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 border-t border-[hsl(0,0%,8%)]">
+            <div class="p-6 md:p-10 border-b md:border-b-0 md:border-r border-[hsl(0,0%,8%)]">
+              <h3 class="font-['Playfair_Display'] text-2xl font-black uppercase mb-2">Precision over volume.</h3>
+              <p class="font-['DM_Sans'] text-sm leading-relaxed opacity-80">
+                Execution is where most agencies lose discipline. We don't. We move according to the blueprint — coordinated, deliberate, and accountable. Media and technology units operate in complete alignment. Nothing leaks.
+              </p>
+            </div>
+            <div class="p-6 md:p-10 flex items-end">
+              <div class="border border-[hsl(0,0%,8%)] px-4 py-3 w-full">
+                <p class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">DELIVERABLE: Campaign / System Launch</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 05 - REFINE -->
+      <div id="phase-05" class="phase-section border-b border-[hsl(0,0%,8%)] last:border-b-0 relative">
+        <div class="phase-dot"></div>
+        <div class="pl-12 md:pl-16 pr-4 md:pr-8">
+          <div class="flex items-center justify-between px-4 md:px-8 py-5 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+            <div class="flex items-center gap-6 md:gap-10">
+              <span class="text-xs font-mono tracking-widest opacity-60 w-6">05</span>
+              <span class="font-['Playfair_Display'] text-sm md:text-base font-black uppercase">REFINE</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono tracking-widest uppercase opacity-70 hidden md:block">We stay until it works.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 border-t border-[hsl(0,0%,8%)]">
+            <div class="p-6 md:p-10 border-b md:border-b-0 md:border-r border-[hsl(0,0%,8%)]">
+              <h3 class="font-['Playfair_Display'] text-2xl font-black uppercase mb-2">We stay until it works.</h3>
+              <p class="font-['DM_Sans'] text-sm leading-relaxed opacity-80">
+                Every system requires calibration. We monitor, measure, and adjust based on real data — not assumptions. The engagement doesn't end at launch. It ends when the objective is met.
+              </p>
+            </div>
+            <div class="p-6 md:p-10 flex items-end">
+              <div class="border border-[hsl(0,0%,8%)] px-4 py-3 w-full">
+                <p class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">DELIVERABLE: Performance Report & Optimisation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── OPERATING PRINCIPLES ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] px-4 md:px-8 py-6 flex items-center justify-between">
+      <h2 class="font-['Playfair_Display'] text-2xl md:text-3xl font-black uppercase">OPERATING PRINCIPLES</h2>
+    </div>
+
+    <!-- ── PROBLEM (id for anchor link) ── -->
+    <div id="problem" class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-between">
+        <div>
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">SECTION 01 — DIAGNOSIS</p>
+          <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl font-black uppercase leading-tight">
+            THE<br />PROBLEM
+          </h2>
+        </div>
+        <div class="mt-8 border-t border-[hsl(0,0%,8%)] pt-6">
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-3">UNITS IN CONFLICT</p>
+          <div class="flex gap-4">
+            <span class="text-xs font-mono tracking-wider uppercase border border-[hsl(0,0%,8%)] px-3 py-1 opacity-60">CAMPAIGN & CONTENT</span>
+            <span class="text-xs font-mono tracking-wider uppercase opacity-40 self-center">+</span>
+            <span class="text-xs font-mono tracking-wider uppercase border border-[hsl(0,0%,8%)] px-3 py-1 opacity-60">TECH</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-8 md:p-10 lg:p-12 flex flex-col justify-center gap-5">
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          We begin with deep structural analysis. We examine communication flow, backend systems, campaign logic, audience pathways, and decision structures. We identify where traction is being lost, where infrastructure cannot sustain attention, and where pressure exposes weakness. Before execution, there is clarity.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── SOLUTION (id for anchor link) ── -->
+    <div id="solution" class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-between">
+        <div>
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">SECTION 02 — PRESCRIPTION</p>
+          <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl font-black uppercase leading-tight">
+            THE<br />SOLUTION
+          </h2>
+        </div>
+        <div class="mt-8 border-t border-[hsl(0,0%,8%)] pt-6">
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-3">UNITS IN ALIGNMENT</p>
+          <div class="flex gap-4">
+            <span class="text-xs font-mono tracking-wider uppercase border border-[hsl(0,0%,8%)] px-3 py-1">CAMPAIGN & CONTENT</span>
+            <span class="text-xs font-mono tracking-wider uppercase opacity-60 self-center">+</span>
+            <span class="text-xs font-mono tracking-wider uppercase border border-[hsl(0,0%,8%)] px-3 py-1">TECH</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-8 md:p-10 lg:p-12 flex flex-col justify-center gap-5">
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          We build and execute a complete engagement system around your goal. We define your narrative and positioning. We plan and produce strategic videos, campaign films, and documentation content. We manage digital communication and media visibility. When required, we design and execute offline events and public activations to drive real engagement.
+        </p>
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          At the same time, we build supporting systems such as websites, landing pages, dashboards, and tracking infrastructure so visibility translates into measurable action. Every piece of content and every system is aligned to one objective, reaching your goal.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── OUTCOME (id for anchor link) ── -->
+    <div id="outcome" class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-between">
+        <div>
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">SECTION 03 — RESULT</p>
+          <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl font-black uppercase leading-tight">
+            THE<br />OUTCOME
+          </h2>
+        </div>
+        <div class="mt-8 border-t border-[hsl(0,0%,8%)] pt-6">
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-3">SYSTEM STATUS</p>
+          <span class="text-xs font-mono tracking-wider uppercase border border-[hsl(0,0%,8%)] px-3 py-1">OPERATIONAL</span>
+        </div>
+      </div>
+      <div class="p-8 md:p-10 lg:p-12 flex flex-col justify-center gap-5">
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          You receive a clearly defined narrative framework and content strategy. You receive professionally produced videos and campaign assets aligned to your positioning.
+        </p>
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          You receive a structured content calendar and engagement roadmap. You receive a functional website or landing system built to capture and convert attention.
+        </p>
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          You receive tracking mechanisms and reporting dashboards to measure performance. You receive offline engagement plans when required to drive real world traction. The result is structured visibility, measurable engagement, and controlled growth.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── CTA BAND ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-center">
+        <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">OPERATING STANDARDS</p>
+        <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase leading-tight mb-8">HOW WE HOLD OURSELVES</h2>
+        <p class="text-xs font-mono tracking-wider uppercase opacity-70">
+          We do not accept volume, We accept responsibility.
+        </p>
+      </div>
+
+      <div class="p-8 md:p-12 lg:p-16 flex flex-col justify-center gap-4">
+        <p class="text-xs font-mono tracking-widest uppercase opacity-50 mb-4">NEXT STEP</p>
+        <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase leading-tight mb-6">
+          SEE THE<br />DOCTRINE<br />IN ACTION.
+        </h2>
+        <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70 max-w-sm">
+          Every engagement in our archives was built on these five phases and four principles. Review the work, then decide if you're ready to open a file.
+        </p>
+        <div class="flex flex-col gap-3 mt-4">
+          <a href="archives.html" class="border border-[hsl(0,0%,8%)] px-8 py-4 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors text-center">
+            ACCESS ARCHIVES →
+          </a>
+          <a href="index.html" class="border border-[hsl(0,0%,8%)]/40 px-8 py-4 text-xs font-mono tracking-widest uppercase hover:border-[hsl(0,0%,8%)] transition-colors text-center opacity-60 hover:opacity-100">
+            ← RETURN TO BASE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="border-t border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-xl font-bold uppercase mb-2">THE CONTROL ROOM</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70">
+            Strategic systems for organizations that demand clarity, structure, and operational control.
+          </p>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Navigation</h4>
+          <ul class="text-xs font-mono space-y-2 uppercase tracking-wider">
+            <li><a href="index.html" class="hover:opacity-70 transition-opacity">Return to Base</a></li>
+            <li><a href="archives.html" class="hover:opacity-70 transition-opacity">Access Archives</a></li>
+          </ul>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Contact</h4>
+          <ul class="text-xs font-mono space-y-1 tracking-wider">
+            <li>+91 7879 186506</li>
+            <li>thecontrolroom.agency@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[hsl(0,0%,8%)] px-6 md:px-8 py-4">
+        <p class="text-[10px] font-mono tracking-widest uppercase text-center opacity-60">
+          © 2026 THE CONTROL ROOM. ALL RIGHTS RESERVED.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================
+    // REAL-TIME CLOCK
+    // ============================================
+    function updateClock() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).toUpperCase();
+      
+      document.getElementById('live-clock').textContent = formatted;
+    }
+    
+    // Update immediately
+    updateClock();
+    
+    // Update every second
+    setInterval(updateClock, 1000);
+
+    // ============================================
+    // ACTIVE PHASE HIGHLIGHTING
+    // ============================================
+    const phaseSections = document.querySelectorAll('.phase-section');
+    const navItems = document.querySelectorAll('.phase-nav-item');
+    
+    function updateActivePhase() {
+      const scrollPosition = window.scrollY + 100; // Offset for sticky nav
+      
+      phaseSections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          // Remove active class from all nav items
+          navItems.forEach(item => item.classList.remove('active'));
+          
+          // Add active class to corresponding nav item
+          const phaseNum = index + 1;
+          const activeNav = document.querySelector(`.phase-nav-item[data-phase="${phaseNum}"]`);
+          if (activeNav) {
+            activeNav.classList.add('active');
+          }
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', updateActivePhase);
+    window.addEventListener('load', updateActivePhase);
+
+    // ============================================
+    // SMOOTH SCROLLING FOR NAVIGATION
+    // ============================================
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Handle anchor scrolling on page load
+    if (window.location.hash) {
+      setTimeout(function() {
+        const element = document.querySelector(window.location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>

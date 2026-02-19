@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CONTROL ROOM — Field Dossiers</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom CSS Variables and Animations */
+    :root {
+      --background: 43 33% 93%;
+      --foreground: 0 0% 8%;
+      --primary: 0 0% 8%;
+      --primary-foreground: 43 33% 93%;
+      --border: 0 0% 8%;
+    }
+
+    body {
+      background-color: hsl(43, 33%, 93%);
+      color: hsl(0, 0%, 8%);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Mono', monospace !important;
+    }
+
+    .border-foreground {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    .bg-foreground {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .text-background {
+      color: hsl(43, 33%, 93%);
+    }
+
+    .hover\:bg-foreground:hover {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .hover\:text-background:hover {
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Filter Navigation */
+    .filter-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: hsl(43, 33%, 93%);
+      border-bottom: 1px solid hsl(0, 0%, 8%);
+      padding: 0.5rem 1rem;
+    }
+
+    .filter-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      scrollbar-width: thin;
+      scrollbar-color: hsl(0, 0%, 8%) hsl(43, 33%, 85%);
+    }
+
+    .filter-container::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .filter-container::-webkit-scrollbar-track {
+      background: hsl(43, 33%, 85%);
+    }
+
+    .filter-container::-webkit-scrollbar-thumb {
+      background-color: hsl(0, 0%, 8%);
+      border-radius: 0;
+    }
+
+    .filter-btn {
+      flex: 0 0 auto;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid hsl(0, 0%, 8%);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      background: transparent;
+      color: hsl(0, 0%, 8%);
+    }
+
+    .filter-btn:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .filter-btn.active {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Card Styles */
+    .case-card {
+      border: 1px solid hsl(0, 0%, 8%);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background-color: hsl(43, 33%, 93%);
+    }
+
+    .case-card:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .case-card:hover .card-image-overlay {
+      opacity: 0.98;
+    }
+
+    .card-image-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .card-image-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(10%) contrast(0.5);
+    }
+
+    .card-image-overlay .scrim {
+      position: absolute;
+      inset: 0;
+      background-color: black;
+      opacity: 0.02;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .status-badge {
+      font-size: 0.5625rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      border: 1px solid;
+      padding: 0.125rem 0.5rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-CLOSED {
+      border-color: hsl(0, 0%, 8%);
+      color: hsl(0, 0%, 8%);
+    }
+
+    .case-card:hover .status-CLOSED {
+      border-color: hsl(43, 33%, 93%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .status-ONGOING {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+
+    .case-card:hover .status-ONGOING {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+
+    .status-CLASSIFIED {
+      border-color: #b91c1c;
+      color: #b91c1c;
+    }
+
+    .case-card:hover .status-CLASSIFIED {
+      border-color: #b91c1c;
+      color: #b91c1c;
+    }
+
+    .tag {
+      font-size: 0.5625rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      padding: 0.125rem 0.5rem;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .case-card:hover .tag {
+      opacity: 0.8;
+    }
+
+    /* Grid animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-item {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    /* Image styling */
+    .object-cover {
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)]">
+
+    <!-- ── TOP BAR WITH REAL-TIME CLOCK ── -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="flex items-center justify-between px-4 md:px-8 py-2 text-xs font-mono tracking-widest uppercase">
+        <span id="live-clock">LOADING...</span>
+        <span>ISSUE 01</span>
+      </div>
+      <div class="text-center py-2 border-t border-[hsl(0,0%,8%)]">
+        <p class="text-xs font-mono tracking-[0.3em] uppercase">
+          Strategic Systems & Operational Intelligence
+        </p>
+      </div>
+    </div>
+
+    <!-- ── MASTHEAD ── -->
+    <div class="text-center py-8 md:py-12 border-b border-[hsl(0,0%,8%)]">
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mb-4">
+        ← <a href="index.html" class="hover:underline">RETURN TO BASE</a>
+      </p>
+      <h1 class="font-['Playfair_Display'] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+        THE CONTROL<br />ROOM
+      </h1>
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mt-4 opacity-50">
+        ACCESS ARCHIVES — SELECTED ENGAGEMENTS
+      </p>
+    </div>
+
+    <!-- ── ARCHIVE HEADER ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] px-4 md:px-8 py-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+        <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase leading-tight">
+          FIELD<br />DOSSIERS
+        </h2>
+        <p class="text-xs font-mono tracking-widest uppercase opacity-50 mt-2" id="record-count">
+          13 ENGAGEMENTS ON RECORD
+        </p>
+      </div>
+      <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-60 max-w-sm">
+        Every engagement below represents a structured system built for a specific objective. Details are disclosed selectively.
+      </p>
+    </div>
+
+    <!-- ── STICKY FILTER NAVIGATION ── -->
+    <div class="filter-nav">
+      <div class="filter-container" id="filterContainer">
+        <button class="filter-btn active" data-filter="ALL">ALL (13)</button>
+        <button class="filter-btn" data-filter="MEDIA">MEDIA (7)</button>
+        <button class="filter-btn" data-filter="TECH">TECH (3)</button>
+        <button class="filter-btn" data-filter="POLITICAL">POLITICAL (1)</button>
+        <button class="filter-btn" data-filter="REAL ESTATE">REAL ESTATE (2)</button>
+      </div>
+    </div>
+
+    <!-- ── ENGAGEMENTS GRID ── -->
+    <div class="px-4 md:px-8 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="engagements-grid">
+        
+        <!-- CR-001: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/turin.jpeg" alt="LAUNCH CAMPAIGN" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-001</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">LAUNCH CAMPAIGN</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Full-spectrum media launch for an emerging consumer brand</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Developed end-to-end brand communication across digital and print. Defined audience personas, built content architecture, executed platform rollout across Instagram, LinkedIn, and OOH. Result: 3x engagement in 6 weeks.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">BRAND IDENTITY</span>
+              <span class="tag">CONTENT STRATEGY</span>
+              <span class="tag">OOH</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-002: TECH -->
+        <div class="case-card grid-item" data-category="TECH">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/bbc.jpeg" alt="Infrastructure Rebuild" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-002</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">TECH · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">Infrastructure Rebuild</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Complete system overhaul for a logistics operator</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Audited and rebuilt the client's digital infrastructure — CRM, booking pipeline, and internal ops dashboard. Eliminated revenue leakage. Reduced operational lag by 60%. System stability achieved within 30 days.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">SYSTEM AUDIT</span>
+              <span class="tag">CRM</span>
+              <span class="tag">PIPELINE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-003: POLITICAL -->
+        <div class="case-card grid-item" data-category="POLITICAL">
+          <div class="card-image-overlay">
+            <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=600&q=80" alt="Positioning Protocol" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-003</span>
+              <span class="status-badge status-CLASSIFIED">CLASSIFIED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">POLITICAL · 2024</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">Positioning Protocol</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Strategic narrative development for a civic figure</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Architected a complete public positioning strategy. Defined messaging pillars, managed media presence, coordinated press touchpoints. Built a communication system that enabled consistent, controlled narrative delivery.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">NARRATIVE DESIGN</span>
+              <span class="tag">MEDIA RELATIONS</span>
+              <span class="tag">PRESS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-004: REAL ESTATE -->
+        <div class="case-card grid-item" data-category="REAL ESTATE">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/real.jpeg" alt="Property Launch — Phase I" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-004</span>
+              <span class="status-badge status-ONGOING">ONGOING</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">REAL ESTATE · 2024</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">Property Launch — Phase I</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Pre-launch demand generation for a residential development</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Executed a pre-launch campaign targeting high-net-worth buyers. Built landing infrastructure, ran targeted acquisition, and orchestrated a waitlist of 400+ qualified leads before the official release date.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">LEAD GENERATION</span>
+              <span class="tag">CAMPAIGN</span>
+              <span class="tag">FUNNEL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-005: TECH -->
+        <div class="case-card grid-item" data-category="TECH">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/civic.jpeg" alt="CIVIC INTERFACE SYSTEM" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-005</span>
+              <span class="status-badge status-CLASSIFIED">CLASSIFIED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">TECH · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">CIVIC INTERFACE SYSTEM</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Structured political campaign interface simulating a municipal voting environment</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Designed and deployed a structured political campaign interface simulating a municipal voting environment. Built multi-layer interface logic including candidate profiling, ballot visualization, verification markers, and structured user navigation.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">CIVIC TECH</span>
+              <span class="tag">INTERFACE DESIGN</span>
+              <span class="tag">UI ARCHITECTURE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-006: TECH -->
+        <div class="case-card grid-item" data-category="TECH">
+          <div class="card-image-overlay">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Conversion Engine" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-006</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">TECH · 2024</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">Conversion Engine</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Website and funnel rebuild for a service business</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Rebuilt the client's website from the ground up. New copy, new architecture, integrated funnel with automated follow-up. Conversion rate improved from 1.2% to 6.8% within 45 days of launch.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">WEB BUILD</span>
+              <span class="tag">FUNNEL</span>
+              <span class="tag">AUTOMATION</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-007: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/amul.jpeg" alt="STANDALONE AD DEPLOYMENT — AMUL" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-007</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">STANDALONE AD DEPLOYMENT — AMUL</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Single-format advertisement asset for a national FMCG brand</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Executed a single-format advertisement asset for a national FMCG brand as part of a targeted visibility push. Handled creative structuring, visual supervision, and execution alignment to maintain brand tonality.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">AD FILM</span>
+              <span class="tag">CREATIVE DIRECTION</span>
+              <span class="tag">BRAND ALIGNMENT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-008: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/canva.jpeg" alt="BRAND ASSET EXECUTION — CANVA" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-008</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">BRAND ASSET EXECUTION — CANVA</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Structured creative output aligned with platform-native design language</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Executed structured creative output aligned with platform-native design language. Contributed to visual alignment, asset refinement, and format adaptation for digital distribution.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">DIGITAL CREATIVE</span>
+              <span class="tag">PLATFORM ADAPTATION</span>
+              <span class="tag">VISUAL CONSISTENCY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-009: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/bose.jpeg" alt="PREMIUM AUDIO BRAND DEPLOYMENT — BOSE" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-009</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">PREMIUM AUDIO BRAND DEPLOYMENT — BOSE</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Controlled execution of a campaign asset for a premium audio brand</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Supported controlled execution of a campaign asset for a premium audio brand. Focused on visual clarity, tonal restraint, and brand-aligned presentation to reflect product positioning.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">PREMIUM BRAND</span>
+              <span class="tag">VISUAL EXECUTION</span>
+              <span class="tag">CAMPAIGN SUPPORT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-010: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/vivo.jpeg" alt="DEVICE LAUNCH SUPPORT — VIVO" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-010</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2024</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">DEVICE LAUNCH SUPPORT — VIVO</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Structured visual rollout during a device-focused promotional cycle</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Contributed to structured visual rollout during a device-focused promotional cycle. Ensured message precision and frame composition aligned with product-forward storytelling.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">PRODUCT VISIBILITY</span>
+              <span class="tag">LAUNCH SUPPORT</span>
+              <span class="tag">DIGITAL ROLLOUT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-011: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/lenskart.jpeg" alt="RETAIL VISIBILITY ASSET — LENSKART" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-011</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2024</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">RETAIL VISIBILITY ASSET — LENSKART</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">Campaign-aligned creative support for retail-facing communication</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Delivered campaign-aligned creative support for retail-facing communication. Maintained brand tone consistency across digital and promotional placements.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">RETAIL COMMUNICATION</span>
+              <span class="tag">BRAND ALIGNMENT</span>
+              <span class="tag">DIGITAL DISTRIBUTION</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CR-012: MEDIA -->
+        <div class="case-card grid-item" data-category="MEDIA">
+          <div class="card-image-overlay">
+            <img src="assets/archieveimages/redbus.jpeg" alt="FULL VIDEO CAMPAIGN EXECUTION — REDBUS" onerror="this.style.display='none'">
+            <div class="scrim"></div>
+          </div>
+          <div class="card-content">
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-mono tracking-widest opacity-50">FILE — CR-012</span>
+              <span class="status-badge status-CLOSED">CLOSED</span>
+            </div>
+            <div class="text-[10px] font-mono tracking-[0.3em] uppercase opacity-60">MEDIA · 2025</div>
+            <div>
+              <h3 class="font-['Playfair_Display'] text-xl font-black uppercase leading-tight mb-1">FULL VIDEO CAMPAIGN EXECUTION — REDBUS</h3>
+              <p class="text-xs font-mono opacity-60 leading-snug">End-to-end video campaign production for digital visibility push</p>
+            </div>
+            <div class="border-t border-[hsl(0,0%,8%)] opacity-30"></div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-75">
+              Conceptualized, scripted, and produced a campaign video asset for RedBus as part of a targeted digital visibility push. Our team developed the narrative framework, handled scriptwriting, supervised production.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto pt-2">
+              <span class="tag">SCRIPT DEVELOPMENT</span>
+              <span class="tag">VIDEO PRODUCTION</span>
+              <span class="tag">END-TO-END EXECUTION</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── EMPTY STATE (hidden by default) ── -->
+      <div id="empty-state" class="text-center py-24 hidden">
+        <p class="text-xs font-mono tracking-[0.4em] uppercase opacity-40">
+          NO RECORDS FOUND
+        </p>
+      </div>
+    </div>
+
+    <!-- ── CTA BAND ── -->
+    <div class="border-t border-b border-[hsl(0,0%,8%)] px-4 md:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6 bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)]">
+      <div>
+        <h3 class="font-['Playfair_Display'] text-2xl md:text-3xl font-black uppercase">
+          READY TO BE<br />ON RECORD?
+        </h3>
+        <p class="text-[10px] font-mono tracking-widest uppercase opacity-50 mt-2">
+          SUBMIT A CLASSIFIED REQUEST
+        </p>
+      </div>
+      <a href="index.html#book-appointment" class="border border-[hsl(43,33%,93%)] px-8 py-3 text-[10px] font-mono tracking-widest uppercase hover:bg-[hsl(43,33%,93%)] hover:text-[hsl(0,0%,8%)] transition-colors">
+        OPEN A FILE →
+      </a>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="border-t border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-xl font-bold uppercase mb-2">THE CONTROL ROOM</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70">
+            Strategic systems for organizations that demand clarity, structure, and operational control.
+          </p>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Navigation</h4>
+          <ul class="text-xs font-mono space-y-2 uppercase tracking-wider">
+            <li><a href="index.html" class="hover:opacity-70 transition-opacity">Return to Base</a></li>
+            <li><a href="how-we-work.html" class="hover:opacity-70 transition-opacity">How We Work</a></li>
+            <li><a href="hiring.html" class="hover:opacity-70 transition-opacity">Personnel Division</a></li>
+          </ul>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Contact</h4>
+          <ul class="text-xs font-mono space-y-1 tracking-wider">
+            <li>+91 7879 186506</li>
+            <li>thecontrolroom.agency@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[hsl(0,0%,8%)] px-6 md:px-8 py-4">
+        <p class="text-[10px] font-mono tracking-widest uppercase text-center opacity-60">
+          © 2026 THE CONTROL ROOM. ALL RIGHTS RESERVED.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================
+    // REAL-TIME CLOCK
+    // ============================================
+    function updateClock() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).toUpperCase();
+      
+      document.getElementById('live-clock').textContent = formatted;
+    }
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ============================================
+    // FILTER SYSTEM
+    // ============================================
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const gridItems = document.querySelectorAll('.grid-item');
+    const recordCountSpan = document.getElementById('record-count');
+    const emptyState = document.getElementById('empty-state');
+    
+    // Category counts
+    const categoryCounts = {
+      'ALL': gridItems.length,
+      'MEDIA': document.querySelectorAll('[data-category="MEDIA"]').length,
+      'TECH': document.querySelectorAll('[data-category="TECH"]').length,
+      'POLITICAL': document.querySelectorAll('[data-category="POLITICAL"]').length,
+      'REAL ESTATE': document.querySelectorAll('[data-category="REAL ESTATE"]').length
+    };
+    
+    // Update filter button text with counts
+    filterButtons.forEach(btn => {
+      const category = btn.getAttribute('data-filter');
+      const count = categoryCounts[category] || 0;
+      btn.textContent = `${category} (${count})`;
+    });
+    
+    function filterEngagements(category) {
+      let visibleCount = 0;
+      
+      gridItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        
+        if (category === 'ALL' || itemCategory === category) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Update record count
+      recordCountSpan.textContent = `${visibleCount} ENGAGEMENT${visibleCount !== 1 ? 'S' : ''} ON RECORD`;
+      
+      // Show/hide empty state
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+    
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons
+        filterButtons.forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Filter engagements
+        const category = this.getAttribute('data-filter');
+        filterEngagements(category);
+      });
+    });
+
+// ============================================
+// CARD HOVER EFFECTS (98% VISIBILITY)
+// ============================================
+gridItems.forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    const overlay = this.querySelector('.card-image-overlay');
+    const img = this.querySelector('.card-image-overlay img');
+    const scrim = this.querySelector('.card-image-overlay .scrim');
+    
+    if (overlay) {
+      overlay.style.opacity = '0.98'; // 98% visibility
+    }
+    if (img) {
+      img.style.filter = 'grayscale(0%) contrast(1.0)'; // Full color, normal contrast
+    }
+    if (scrim) {
+      scrim.style.opacity = '0.02'; // Just 2% darkening
+    }
+    
+    // Optional: Make text slightly transparent to let image show through more
+    const cardContent = this.querySelector('.card-content');
+    if (cardContent) {
+      cardContent.style.opacity = '0.95';
+    }
+  });
+  
+  card.addEventListener('mouseleave', function() {
+    const overlay = this.querySelector('.card-image-overlay');
+    const img = this.querySelector('.card-image-overlay img');
+    const scrim = this.querySelector('.card-image-overlay .scrim');
+    const cardContent = this.querySelector('.card-content');
+    
+    if (overlay) {
+      overlay.style.opacity = '0';
+    }
+    if (img) {
+      img.style.filter = 'grayscale(10%) contrast(1.05)';
+    }
+    if (scrim) {
+      scrim.style.opacity = '0.02';
+    }
+    if (cardContent) {
+      cardContent.style.opacity = '1';
+    }
+  });
+});
+
+    // ============================================
+    // ANIMATION DELAYS FOR GRID ITEMS
+    // ============================================
+    gridItems.forEach((item, index) => {
+      item.style.animationDelay = `${index * 0.05}s`;
+    });
+  </script>
+</body>
+</html>

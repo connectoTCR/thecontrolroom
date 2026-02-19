@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CONTROL ROOM — Error 404</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom CSS Variables and Animations */
+    :root {
+      --background: 43 33% 93%;
+      --foreground: 0 0% 8%;
+      --primary: 0 0% 8%;
+      --primary-foreground: 43 33% 93%;
+      --border: 0 0% 8%;
+      --muted: 0 0% 35%;
+    }
+
+    body {
+      background-color: hsl(43, 33%, 93%);
+      color: hsl(0, 0%, 8%);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Mono', monospace !important;
+    }
+
+    .border-foreground {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    .bg-foreground {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .text-background {
+      color: hsl(43, 33%, 93%);
+    }
+
+    .hover\:bg-foreground:hover {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .hover\:text-background:hover {
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Glitch Effect */
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: "404";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: hsl(43, 33%, 93%);
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff00c1;
+      clip: rect(24px, 550px, 90px, 0);
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 #00fff9;
+      clip: rect(85px, 550px, 140px, 0);
+      animation: glitch-anim-2 2s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim-1 {
+      0% { clip: rect(12px, 9999px, 24px, 0); }
+      5% { clip: rect(42px, 9999px, 94px, 0); }
+      10% { clip: rect(106px, 9999px, 66px, 0); }
+      15% { clip: rect(10px, 9999px, 153px, 0); }
+      20% { clip: rect(78px, 9999px, 38px, 0); }
+      25% { clip: rect(92px, 9999px, 132px, 0); }
+      30% { clip: rect(8px, 9999px, 80px, 0); }
+      35% { clip: rect(135px, 9999px, 5px, 0); }
+      40% { clip: rect(105px, 9999px, 140px, 0); }
+      45% { clip: rect(128px, 9999px, 100px, 0); }
+      50% { clip: rect(56px, 9999px, 11px, 0); }
+      55% { clip: rect(58px, 9999px, 18px, 0); }
+      60% { clip: rect(60px, 9999px, 40px, 0); }
+      65% { clip: rect(154px, 9999px, 62px, 0); }
+      70% { clip: rect(161px, 9999px, 42px, 0); }
+      75% { clip: rect(38px, 9999px, 130px, 0); }
+      80% { clip: rect(69px, 9999px, 14px, 0); }
+      85% { clip: rect(139px, 9999px, 100px, 0); }
+      90% { clip: rect(42px, 9999px, 113px, 0); }
+      95% { clip: rect(34px, 9999px, 97px, 0); }
+      100% { clip: rect(106px, 9999px, 60px, 0); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(65px, 9999px, 19px, 0); }
+      5% { clip: rect(20px, 9999px, 71px, 0); }
+      10% { clip: rect(47px, 9999px, 26px, 0); }
+      15% { clip: rect(118px, 9999px, 22px, 0); }
+      20% { clip: rect(158px, 9999px, 52px, 0); }
+      25% { clip: rect(45px, 9999px, 54px, 0); }
+      30% { clip: rect(136px, 9999px, 21px, 0); }
+      35% { clip: rect(115px, 9999px, 86px, 0); }
+      40% { clip: rect(67px, 9999px, 98px, 0); }
+      45% { clip: rect(165px, 9999px, 44px, 0); }
+      50% { clip: rect(83px, 9999px, 104px, 0); }
+      55% { clip: rect(124px, 9999px, 78px, 0); }
+      60% { clip: rect(159px, 9999px, 65px, 0); }
+      65% { clip: rect(23px, 9999px, 49px, 0); }
+      70% { clip: rect(102px, 9999px, 148px, 0); }
+      75% { clip: rect(142px, 9999px, 109px, 0); }
+      80% { clip: rect(99px, 9999px, 53px, 0); }
+      85% { clip: rect(72px, 9999px, 43px, 0); }
+      90% { clip: rect(58px, 9999px, 80px, 0); }
+      95% { clip: rect(131px, 9999px, 93px, 0); }
+      100% { clip: rect(47px, 9999px, 62px, 0); }
+    }
+
+    /* Static noise animation */
+    .static-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.02;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4xIiAvPjwvc3ZnPg==');
+      animation: static 0.2s infinite;
+      z-index: 10;
+    }
+
+    @keyframes static {
+      0% { transform: translate(0, 0); }
+      10% { transform: translate(-1%, -1%); }
+      20% { transform: translate(1%, 1%); }
+      30% { transform: translate(-2%, 0); }
+      40% { transform: translate(2%, 2%); }
+      50% { transform: translate(-1%, 2%); }
+      60% { transform: translate(1%, -1%); }
+      70% { transform: translate(-2%, 1%); }
+      80% { transform: translate(2%, -1%); }
+      90% { transform: translate(-1%, -2%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* CRT flicker */
+    .crt::before {
+      content: "";
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+      background-size: 100% 4px, 100% 100%;
+      pointer-events: none;
+      animation: flicker 0.15s infinite;
+      z-index: 5;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.2; }
+      50% { opacity: 0.25; }
+      100% { opacity: 0.2; }
+    }
+
+    /* Pulse animation for return button */
+    @keyframes pulse-border {
+      0% { border-color: hsl(0, 0%, 8%); }
+      50% { border-color: hsl(0, 0%, 40%); }
+      100% { border-color: hsl(0, 0%, 8%); }
+    }
+
+    .pulse {
+      animation: pulse-border 2s infinite;
+    }
+
+    /* Terminal cursor blink */
+    .terminal-cursor {
+      display: inline-block;
+      width: 0.5rem;
+      height: 1rem;
+      background-color: hsl(0, 0%, 8%);
+      margin-left: 0.25rem;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* Countdown numbers */
+    .countdown-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.875rem;
+      border: 1px solid hsl(0, 0%, 8%);
+      padding: 0.25rem 0.5rem;
+      margin: 0 0.125rem;
+    }
+  </style>
+</head>
+<body class="crt">
+  <!-- Static overlay for analog TV effect -->
+  <div class="static-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="max-w-2xl w-full border-4 border-[hsl(0,0%,8%)] p-8 md:p-12 lg:p-16 relative z-20 bg-[hsl(43,33%,93%)] shadow-[12px_12px_0_0_hsl(0,0%,8%)]">
+
+    <!-- Top bar with error code -->
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-[hsl(0,0%,8%)] font-mono text-xs tracking-widest uppercase">
+      <span id="live-clock" class="text-[10px] md:text-xs">LOADING...</span>
+      <span class="text-[10px] md:text-xs">SYSTEM ALERT</span>
+    </div>
+
+    <!-- Main error content -->
+    <div class="text-center mb-8">
+      <div class="mb-6 relative">
+        <span class="glitch font-['Playfair_Display'] text-8xl md:text-9xl font-black tracking-tighter">404</span>
+      </div>
+      
+      <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase mb-4 tracking-tight">
+        SIGNAL LOST
+      </h2>
+      
+      <div class="w-16 h-1 bg-[hsl(0,0%,8%)] mx-auto mb-6"></div>
+      
+      <p class="font-mono text-xs md:text-sm uppercase tracking-widest mb-2 opacity-70">
+        ERROR CODE: CR-404-X
+      </p>
+      
+      <p class="font-mono text-xs md:text-sm uppercase tracking-widest mb-8 opacity-70">
+        FILE NOT FOUND IN ARCHIVES
+      </p>
+    </div>
+
+    <!-- Terminal-style message -->
+    <div class="border-2 border-[hsl(0,0%,8%)] p-6 mb-8 font-mono text-xs bg-[hsl(43,33%,90%)]">
+      <div class="flex items-center gap-2 mb-3 pb-2 border-b border-[hsl(0,0%,8%)]/30">
+        <span class="uppercase tracking-widest text-[10px]">> TERMINAL v1.0</span>
+        <span class="uppercase tracking-widest text-[10px] opacity-50">CR-DIAG-001</span>
+      </div>
+      
+      <p class="mb-2"><span class="text-[hsl(0,0%,8%)]/70">$</span> <span class="uppercase">diagnose --path</span> <span class="text-[hsl(0,0%,8%)]/60">/archives/requested-file</span></p>
+      <p class="mb-2 text-[hsl(0,0%,8%)]/80">>> Scanning system...</p>
+      <p class="mb-2 text-red-700 font-bold">>> ERROR: Requested file does not exist in database</p>
+      <p class="mb-4 text-[hsl(0,0%,8%)]/80">>> Possible causes: Invalid route, missing record, or access restriction</p>
+      
+      <div class="flex items-center mt-4 pt-2 border-t border-[hsl(0,0%,8%)]/30">
+        <span class="text-[hsl(0,0%,8%)]/70 mr-2">$</span>
+        <span class="typing-text">suggest --action</span>
+        <span class="terminal-cursor"></span>
+      </div>
+    </div>
+
+    <!-- System diagnostics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      <div class="border border-[hsl(0,0%,8%)] p-3 text-center">
+        <p class="text-[8px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 mb-1">STATUS</p>
+        <p class="text-xs md:text-sm font-mono text-red-700">OFFLINE</p>
+      </div>
+      <div class="border border-[hsl(0,0%,8%)] p-3 text-center">
+        <p class="text-[8px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 mb-1">SIGNAL</p>
+        <p class="text-xs md:text-sm font-mono">-∞ dB</p>
+      </div>
+      <div class="border border-[hsl(0,0%,8%)] p-3 text-center">
+        <p class="text-[8px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 mb-1">ATTEMPT</p>
+        <p class="text-xs md:text-sm font-mono" id="attempt-count">03</p>
+      </div>
+      <div class="border border-[hsl(0,0%,8%)] p-3 text-center">
+        <p class="text-[8px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 mb-1">AUTH</p>
+        <p class="text-xs md:text-sm font-mono text-green-700">VALID</p>
+      </div>
+    </div>
+
+    <!-- Redirect timer -->
+    <div class="text-center mb-8 p-4 border border-[hsl(0,0%,8%)] bg-[hsl(43,33%,90%)]">
+      <p class="text-xs font-mono uppercase tracking-widest mb-2">AUTOMATIC REDIRECT IN</p>
+      <div class="flex items-center justify-center gap-2" id="countdown-container">
+        <span class="countdown-number" id="countdown-10">1</span>
+        <span class="countdown-number" id="countdown-1">0</span>
+        <span class="text-xs font-mono mx-1">:</span>
+        <span class="countdown-number" id="countdown-0">0</span>
+        <span class="countdown-number" id="countdown-sec">9</span>
+      </div>
+      <p class="text-[8px] font-mono uppercase tracking-widest mt-2 opacity-40">INTERRUPT WITH ANY KEY</p>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <a href="index.html" 
+         class="border-2 border-[hsl(0,0%,8%)] px-8 py-4 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors min-w-[200px] text-center pulse">
+        ← RETURN TO BASE
+      </a>
+      
+      <div class="flex gap-3">
+        <a href="archives.html" class="border border-[hsl(0,0%,8%)] px-4 py-2 text-[10px] font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors">
+          ARCHIVES
+        </a>
+        <a href="how-we-work.html" class="border border-[hsl(0,0%,8%)] px-4 py-2 text-[10px] font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors">
+          DOCTRINE
+        </a>
+        <button onclick="window.history.back()" class="border border-[hsl(0,0%,8%)] px-4 py-2 text-[10px] font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors">
+          BACK
+        </button>
+      </div>
+    </div>
+
+    <!-- Error details footer -->
+    <div class="mt-8 pt-4 border-t border-[hsl(0,0%,8%)] text-[8px] md:text-[10px] font-mono uppercase tracking-widest opacity-40 flex justify-between">
+      <span>TIMESTAMP: <span id="timestamp">2026-02-19 14:30:45 UTC</span></span>
+      <span>NODE: CR-EDGE-01</span>
+      <span>PACKET: LOST</span>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // REAL-TIME CLOCK
+    // ============================================
+    function updateClock() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).toUpperCase();
+      
+      document.getElementById('live-clock').textContent = formatted;
+      
+      // Update timestamp in footer
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('timestamp').textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC`;
+    }
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ============================================
+    // COUNTDOWN TIMER (10 seconds to redirect)
+    // ============================================
+    let countdown = 9; // Start at 9 seconds
+    const countdownSecElement = document.getElementById('countdown-sec');
+    const countdown10Element = document.getElementById('countdown-10');
+    const countdown1Element = document.getElementById('countdown-1');
+    const countdown0Element = document.getElementById('countdown-0');
+    
+    // Set initial display
+    countdown10Element.textContent = '0';
+    countdown1Element.textContent = '0';
+    countdown0Element.textContent = '0';
+    
+    function updateCountdown() {
+      const seconds = countdown;
+      const minutes = 0; // Always 0 for this demo
+      
+      // Format: 00:09, 00:08, etc.
+      countdown10Element.textContent = '0';
+      countdown1Element.textContent = '0';
+      countdown0Element.textContent = '0';
+      
+      if (seconds >= 10) {
+        countdown1Element.textContent = '1';
+        countdown0Element.textContent = seconds - 10;
+      } else {
+        countdown1Element.textContent = '0';
+        countdown0Element.textContent = seconds;
+      }
+      
+      countdownSecElement.textContent = seconds;
+    }
+    
+    updateCountdown();
+    
+    const timer = setInterval(() => {
+      countdown--;
+      updateCountdown();
+      
+      if (countdown < 0) {
+        clearInterval(timer);
+        // Redirect to homepage
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+    
+    // ============================================
+    // INTERRUPT COUNTDOWN ON ANY KEY
+    // ============================================
+    document.addEventListener('keydown', function() {
+      clearInterval(timer);
+      
+      // Update display to show countdown stopped
+      document.getElementById('countdown-container').innerHTML = `
+        <span class="text-xs font-mono text-red-700">REDIRECT ABORTED</span>
+      `;
+    });
+
+    // ============================================
+    // RANDOM ATTEMPT COUNTER
+    // ============================================
+    function updateAttemptCount() {
+      const attemptElement = document.getElementById('attempt-count');
+      const attempts = ['01', '02', '03', '04', '05', '07', '12', '23', '47'];
+      const randomIndex = Math.floor(Math.random() * attempts.length);
+      attemptElement.textContent = attempts[randomIndex];
+    }
+    
+    // Update attempt count every 3 seconds
+    updateAttemptCount();
+    setInterval(updateAttemptCount, 3000);
+
+    // ============================================
+    // TERMINAL TYPING ANIMATION
+    // ============================================
+    const typingText = document.querySelector('.typing-text');
+    const commands = ['suggest --action', 'find --similar', 'trace --path', 'diagnose --full'];
+    let commandIndex = 0;
+    
+    setInterval(() => {
+      commandIndex = (commandIndex + 1) % commands.length;
+      typingText.textContent = commands[commandIndex];
+    }, 2000);
+
+    // ============================================
+    // PREVENT ACCIDENTAL FORM SUBMISSION
+    // ============================================
+    document.addEventListener('keydown', function(e) {
+      // Prevent spacebar from triggering page scroll
+      if (e.code === 'Space') {
+        e.preventDefault();
+      }
+    });
+
+    // ============================================
+    // GLITCH INTENSITY ON MOUSE MOVE
+    // ============================================
+    const glitchElement = document.querySelector('.glitch');
+    
+    document.addEventListener('mousemove', function(e) {
+      const intensity = Math.min(e.clientX / window.innerWidth, 0.5);
+      // Subtle effect - could add more glitch on mouse movement
+    });
+  </script>
+</body>
+</html>

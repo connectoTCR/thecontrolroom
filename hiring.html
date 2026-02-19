@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CONTROL ROOM — Personnel Division</title>
+  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Custom CSS Variables and Animations */
+    :root {
+      --background: 43 33% 93%;
+      --foreground: 0 0% 8%;
+      --primary: 0 0% 8%;
+      --primary-foreground: 43 33% 93%;
+      --border: 0 0% 8%;
+    }
+
+    body {
+      background-color: hsl(43, 33%, 93%);
+      color: hsl(0, 0%, 8%);
+      font-family: 'DM Sans', sans-serif;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Mono', monospace !important;
+    }
+
+    .border-foreground {
+      border-color: hsl(0, 0%, 8%);
+    }
+
+    .bg-foreground {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .text-background {
+      color: hsl(43, 33%, 93%);
+    }
+
+    .hover\:bg-foreground:hover {
+      background-color: hsl(0, 0%, 8%);
+    }
+
+    .hover\:text-background:hover {
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* First letter styling */
+    .first-letter\:text-5xl::first-letter {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      float: left;
+      margin-right: 0.5rem;
+      line-height: 1;
+    }
+
+    /* Role Navigation */
+    .role-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: hsl(43, 33%, 93%);
+      border-bottom: 1px solid hsl(0, 0%, 8%);
+      padding: 0.5rem 1rem;
+    }
+
+    .role-nav-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      scrollbar-width: thin;
+      scrollbar-color: hsl(0, 0%, 8%) hsl(43, 33%, 85%);
+    }
+
+    .role-nav-container::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .role-nav-container::-webkit-scrollbar-track {
+      background: hsl(43, 33%, 85%);
+    }
+
+    .role-nav-container::-webkit-scrollbar-thumb {
+      background-color: hsl(0, 0%, 8%);
+      border-radius: 0;
+    }
+
+    .role-nav-item {
+      flex: 0 0 auto;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid hsl(0, 0%, 8%);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      background: transparent;
+      color: hsl(0, 0%, 8%);
+      text-decoration: none;
+    }
+
+    .role-nav-item:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .role-nav-item.active {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Role Cards */
+    .role-section {
+      scroll-margin-top: 100px;
+    }
+
+    .role-card {
+      border-bottom: 1px solid hsl(0, 0%, 8%);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .role-card:last-child {
+      border-bottom: none;
+    }
+
+    .role-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1rem;
+      transition: background-color 0.2s ease;
+    }
+
+    @media (min-width: 768px) {
+      .role-card-header {
+        padding: 1.25rem 2rem;
+      }
+    }
+
+    .role-card-header:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .role-card-header:hover .role-id,
+    .role-card-header:hover .role-unit {
+      opacity: 0.7;
+    }
+
+    .role-id {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+      width: 6rem;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .role-id {
+        display: block;
+      }
+    }
+
+    .role-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.875rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 768px) {
+      .role-title {
+        font-size: 1rem;
+      }
+    }
+
+    .role-unit {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .role-unit {
+        display: block;
+      }
+    }
+
+    .status-badge {
+      font-size: 0.5625rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      border: 1px solid;
+      padding: 0.125rem 0.5rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .status-badge {
+        display: block;
+      }
+    }
+
+    .status-OPEN {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+
+    .status-CLOSED {
+      border-color: hsl(0, 0%, 8%);
+      color: hsl(0, 0%, 8%);
+    }
+
+    .role-card-header:hover .status-OPEN {
+      border-color: hsl(43, 33%, 93%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .role-card-header:hover .status-CLOSED {
+      border-color: hsl(43, 33%, 93%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    .expand-icon {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      opacity: 0.5;
+    }
+
+    .role-card-header:hover .expand-icon {
+      opacity: 0.7;
+    }
+
+    /* Expanded Content */
+    .role-expanded {
+      display: none;
+      grid-template-columns: 1fr;
+      border-top: 1px solid hsl(0, 0%, 8%);
+    }
+
+    @media (min-width: 768px) {
+      .role-expanded {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .role-expanded.active {
+      display: grid;
+    }
+
+    .expanded-left {
+      padding: 1.5rem;
+      border-bottom: 1px solid hsl(0, 0%, 8%);
+    }
+
+    @media (min-width: 768px) {
+      .expanded-left {
+        padding: 2.5rem;
+        border-bottom: none;
+        border-right: 1px solid hsl(0, 0%, 8%);
+      }
+    }
+
+    .expanded-right {
+      padding: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .expanded-right {
+        padding: 2.5rem;
+      }
+    }
+
+    .requirement-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .requirement-bullet {
+      font-size: 0.625rem;
+      font-family: 'Space Mono', monospace;
+      opacity: 0.4;
+      margin-top: 0.125rem;
+      flex-shrink: 0;
+    }
+
+    .apply-button {
+      margin-top: 2rem;
+      border: 1px solid hsl(0, 0%, 8%);
+      padding: 0.5rem 1.5rem;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .apply-button:hover {
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+    }
+
+    /* Form Styles */
+    .form-input {
+      width: 100%;
+      border: 1px solid hsl(0, 0%, 8%);
+      background: transparent;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      margin-top: 0.25rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-width: 2px;
+    }
+
+    .form-label {
+      font-size: 0.625rem;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .file-input {
+      width: 100%;
+      border: 1px solid hsl(0, 0%, 8%);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .file-input::file-selector-button {
+      border: none;
+      background: transparent;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      margin-right: 1rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background-color: hsl(0, 0%, 8%);
+      color: hsl(43, 33%, 93%);
+      padding: 0.75rem 2rem;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)]">
+
+    <!-- ── TOP BAR WITH REAL-TIME CLOCK ── -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+      <div class="flex items-center justify-between px-4 md:px-8 py-2 text-xs font-mono tracking-widest uppercase">
+        <span id="live-clock">LOADING...</span>
+        <span>ISSUE 01</span>
+      </div>
+      <div class="text-center py-2 border-t border-[hsl(0,0%,8%)]">
+        <p class="text-xs font-mono tracking-[0.3em] uppercase">
+          Strategic Systems & Operational Intelligence
+        </p>
+      </div>
+    </div>
+
+    <!-- ── MASTHEAD ── -->
+    <div class="text-center py-8 md:py-12 border-b border-[hsl(0,0%,8%)]">
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mb-4">
+        ← <a href="index.html" class="hover:underline">RETURN TO BASE</a>
+      </p>
+      <h1 class="font-['Playfair_Display'] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+        THE CONTROL<br />ROOM
+      </h1>
+      <p class="text-xs font-mono tracking-[0.4em] uppercase mt-4 opacity-50">
+        PERSONNEL DIVISION — OPEN POSITIONS
+      </p>
+    </div>
+
+    <!-- ── OPENING ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-center">
+        <p class="text-xs font-mono tracking-widest uppercase opacity-50 mb-6">PERSONNEL — CR-HR-001</p>
+        <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
+          WE ARE<br />HIRING.
+        </h2>
+        <p class="text-xs font-mono tracking-widest uppercase opacity-40 mt-6" id="open-positions-count">
+          4 POSITIONS CURRENTLY OPEN
+        </p>
+      </div>
+      <div class="p-8 md:p-12 lg:p-16 flex flex-col justify-center gap-6">
+        <p class="font-['DM_Sans'] text-sm leading-relaxed first-letter:text-5xl first-letter:font-['Playfair_Display'] first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+          We do not hire for volume. We hire for standard. Every person who joins The Control Room operates as a unit — accountable, precise, and aligned to the objective.
+        </p>
+        <p class="font-['DM_Sans'] text-sm leading-relaxed">
+          We run two parallel units: Content, and Tech. Both are equally critical. Both are held to the same standard of output. If you cannot work under discipline, this is not the right engagement.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── STICKY ROLE NAVIGATION ── -->
+    <div class="role-nav">
+      <div class="role-nav-container">
+        <a href="#role-01" class="role-nav-item active">01 · CAMPAIGN STRATEGIST</a>
+        <a href="#role-02" class="role-nav-item">02 · FULL STACK DEVELOPER</a>
+        <a href="#role-03" class="role-nav-item">03 · CONTENT & EDITORIAL LEAD</a>
+        <a href="#role-04" class="role-nav-item">04 · SYSTEMS & OPERATIONS ANALYST</a>
+        <a href="#apply-form" class="role-nav-item">APPLY NOW</a>
+      </div>
+    </div>
+
+    <!-- ── ROLES HEADER ── -->
+    <div class="border-b border-[hsl(0,0%,8%)] px-4 md:px-8 py-6 flex items-center justify-between">
+      <h2 class="font-['Playfair_Display'] text-2xl md:text-3xl font-black uppercase">OPEN POSITIONS</h2>
+      <p class="text-xs font-mono tracking-widest uppercase opacity-50 hidden md:block">CLICK TO EXPAND</p>
+    </div>
+
+    <!-- ── ROLES LIST ── -->
+    <div class="border-b border-[hsl(0,0%,8%)]">
+
+      <!-- Role 01: Campaign Strategist -->
+      <div id="role-01" class="role-card role-section">
+        <div class="role-card-header" role="button">
+          <div class="flex items-center gap-6 md:gap-10">
+            <span class="role-id">CR-JD-001</span>
+            <span class="role-title">CAMPAIGN STRATEGIST</span>
+            <span class="role-unit">CAMPAIGN & CONTENT</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="status-badge status-OPEN">OPEN</span>
+            <span class="expand-icon" id="expand-icon-01">+</span>
+          </div>
+        </div>
+        <div class="role-expanded" id="expanded-01">
+          <div class="expanded-left">
+            <div class="flex gap-3 mb-6">
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">FULL TIME</span>
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">REMOTE / HYBRID</span>
+              <span class="text-[9px] font-mono border border-green-600 text-green-600 px-2 py-0.5 uppercase">OPEN</span>
+            </div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-80">
+              We are looking for a strategist who understands that communication is architecture. You will be responsible for building and executing campaign frameworks across multiple client engagements — from audience mapping to content delivery.
+            </p>
+          </div>
+          <div class="expanded-right">
+            <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-4">REQUIREMENTS</p>
+            <div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">3+ years in brand or campaign strategy</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Experience working across digital and traditional channels</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Ability to translate business objectives into communication frameworks</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Strong written communication — no fluff, no filler</p>
+              </div>
+            </div>
+            <a href="#apply-form" class="apply-button mt-8">APPLY FOR THIS ROLE →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role 02: Full Stack Developer -->
+      <div id="role-02" class="role-card role-section">
+        <div class="role-card-header" role="button">
+          <div class="flex items-center gap-6 md:gap-10">
+            <span class="role-id">CR-JD-002</span>
+            <span class="role-title">FULL STACK DEVELOPER</span>
+            <span class="role-unit">TECH</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="status-badge status-OPEN">OPEN</span>
+            <span class="expand-icon" id="expand-icon-02">+</span>
+          </div>
+        </div>
+        <div class="role-expanded" id="expanded-02">
+          <div class="expanded-left">
+            <div class="flex gap-3 mb-6">
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">FULL TIME</span>
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">REMOTE / HYBRID</span>
+              <span class="text-[9px] font-mono border border-green-600 text-green-600 px-2 py-0.5 uppercase">OPEN</span>
+            </div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-80">
+              We build systems that support live campaigns under real pressure. You will architect, build, and maintain web infrastructure — funnels, platforms, dashboards, and backend flows — that perform without failure when it matters most.
+            </p>
+          </div>
+          <div class="expanded-right">
+            <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-4">REQUIREMENTS</p>
+            <div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Proficiency in React, Node.js, and modern web stack</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Experience building and integrating CRMs, funnels, and automation tools</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Strong understanding of system performance and reliability</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Ability to work under deadline-driven, high-accountability conditions</p>
+              </div>
+            </div>
+            <a href="#apply-form" class="apply-button mt-8">APPLY FOR THIS ROLE →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role 03: Content & Editorial Lead -->
+      <div id="role-03" class="role-card role-section">
+        <div class="role-card-header" role="button">
+          <div class="flex items-center gap-6 md:gap-10">
+            <span class="role-id">CR-JD-003</span>
+            <span class="role-title">CONTENT & EDITORIAL LEAD</span>
+            <span class="role-unit">CAMPAIGN & CONTENT</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="status-badge status-OPEN">OPEN</span>
+            <span class="expand-icon" id="expand-icon-03">+</span>
+          </div>
+        </div>
+        <div class="role-expanded" id="expanded-03">
+          <div class="expanded-left">
+            <div class="flex gap-3 mb-6">
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">FULL TIME</span>
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">REMOTE</span>
+              <span class="text-[9px] font-mono border border-green-600 text-green-600 px-2 py-0.5 uppercase">OPEN</span>
+            </div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-80">
+              Words are infrastructure here. You will lead written output across client engagements — long-form editorial, ghostwritten pieces, positioning statements, and campaign copy. Precision and discipline are non-negotiable.
+            </p>
+          </div>
+          <div class="expanded-right">
+            <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-4">REQUIREMENTS</p>
+            <div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Demonstrated experience in editorial or brand writing</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Ability to write across formats — B2B, political, real estate, consumer</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Strong research capability and attention to factual accuracy</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Portfolio of published or client-facing work</p>
+              </div>
+            </div>
+            <a href="#apply-form" class="apply-button mt-8">APPLY FOR THIS ROLE →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role 04: Systems & Operations Analyst -->
+      <div id="role-04" class="role-card role-section">
+        <div class="role-card-header" role="button">
+          <div class="flex items-center gap-6 md:gap-10">
+            <span class="role-id">CR-JD-004</span>
+            <span class="role-title">SYSTEMS & OPERATIONS ANALYST</span>
+            <span class="role-unit">TECH</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="status-badge status-OPEN">OPEN</span>
+            <span class="expand-icon" id="expand-icon-04">+</span>
+          </div>
+        </div>
+        <div class="role-expanded" id="expanded-04">
+          <div class="expanded-left">
+            <div class="flex gap-3 mb-6">
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">CONTRACT</span>
+              <span class="text-[9px] font-mono border border-[hsl(0,0%,8%)] px-2 py-0.5 uppercase opacity-60">REMOTE</span>
+              <span class="text-[9px] font-mono border border-green-600 text-green-600 px-2 py-0.5 uppercase">OPEN</span>
+            </div>
+            <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-80">
+              You will audit existing client systems, identify inefficiencies and revenue leaks, and produce actionable situation reports. Your output directly informs how we build. Analytical rigour is the standard — not the exception.
+            </p>
+          </div>
+          <div class="expanded-right">
+            <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-4">REQUIREMENTS</p>
+            <div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Experience in operations auditing or business systems analysis</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Familiarity with CRM, automation, and digital infrastructure tools</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">Ability to produce structured, executive-level written reports</p>
+              </div>
+              <div class="requirement-item">
+                <span class="requirement-bullet">—</span>
+                <p class="text-xs font-mono tracking-wide leading-relaxed opacity-80">High attention to detail and process discipline</p>
+              </div>
+            </div>
+            <a href="#apply-form" class="apply-button mt-8">APPLY FOR THIS ROLE →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── APPLY FORM ── -->
+    <div id="apply-form" class="border-b border-[hsl(0,0%,8%)] grid grid-cols-1 lg:grid-cols-2">
+      <div class="p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)] flex flex-col justify-between">
+        <div>
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">FORM ID: CR-HR-APP</p>
+          <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase leading-tight mb-4">
+            SUBMIT YOUR<br />APPLICATION
+          </h2>
+        </div>
+        <div class="mt-8 border-t border-[hsl(0,0%,8%)] pt-6">
+          <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-1">DIRECT LINE</p>
+          <p class="text-xs font-mono">+91 7879 186506</p>
+          <p class="text-xs font-mono mt-1">thecontrolroom.agency@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="p-8 md:p-10 lg:p-12">
+        <p class="text-[10px] font-mono tracking-widest uppercase opacity-40 mb-6">
+          APPLICATION
+        </p>
+        <form id="application-form" onsubmit="event.preventDefault(); alert('Application submitted (demo mode)');">
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="form-label">FULL NAME *</label>
+                <input type="text" required class="form-input" value="Alex Johnson">
+              </div>
+              <div>
+                <label class="form-label">EMAIL ADDRESS *</label>
+                <input type="email" required class="form-input" value="alex.johnson@example.com">
+              </div>
+            </div>
+            <div>
+              <label class="form-label">CONTACT NUMBER *</label>
+              <input type="tel" required class="form-input" value="+91 98765 43210">
+            </div>
+            <div>
+              <label class="form-label">POSITION APPLYING FOR *</label>
+              <select required class="form-input">
+                <option value="">SELECT A ROLE</option>
+                <option value="CR-JD-001" selected>CAMPAIGN STRATEGIST — CAMPAIGN & CONTENT</option>
+                <option value="CR-JD-002">FULL STACK DEVELOPER — TECH</option>
+                <option value="CR-JD-003">CONTENT & EDITORIAL LEAD — CAMPAIGN & CONTENT</option>
+                <option value="CR-JD-004">SYSTEMS & OPERATIONS ANALYST — TECH</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">CV / RESUME *</label>
+              <div class="file-input">
+                <input type="file" required accept=".pdf,.doc,.docx" class="w-full">
+              </div>
+              <p class="text-[9px] font-mono uppercase tracking-widest opacity-40 mt-1">
+                ACCEPTED FORMATS: PDF, DOC, DOCX
+              </p>
+            </div>
+            <div>
+              <label class="form-label">WHY YOU. BRIEFLY. *</label>
+              <textarea rows="4" required class="form-input resize-none">I have 5 years of experience in brand strategy and campaign execution. My approach combines creative vision with systematic thinking.</textarea>
+            </div>
+            <button type="submit" class="submit-btn">
+              SUBMIT APPLICATION
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="border-t border-[hsl(0,0%,8%)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
+        <div class="p-6 md:p-8">
+          <h3 class="font-['Playfair_Display'] text-xl font-bold uppercase mb-2">THE CONTROL ROOM</h3>
+          <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70">
+            Strategic systems for organizations that demand clarity, structure, and operational control.
+          </p>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Navigation</h4>
+          <ul class="text-xs font-mono space-y-2 uppercase tracking-wider">
+            <li><a href="index.html" class="hover:opacity-70 transition-opacity">Return to Base</a></li>
+            <li><a href="archives.html" class="hover:opacity-70 transition-opacity">Access Archives</a></li>
+            <li><a href="how-we-work.html" class="hover:opacity-70 transition-opacity">How We Work</a></li>
+          </ul>
+        </div>
+        <div class="p-6 md:p-8">
+          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Contact</h4>
+          <ul class="text-xs font-mono space-y-1 tracking-wider">
+            <li>+91 7879 186506</li>
+            <li>thecontrolroom.agency@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[hsl(0,0%,8%)] px-6 md:px-8 py-4">
+        <p class="text-[10px] font-mono tracking-widest uppercase text-center opacity-60">
+          © 2026 THE CONTROL ROOM. ALL RIGHTS RESERVED.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ============================================
+    // REAL-TIME CLOCK
+    // ============================================
+    function updateClock() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).toUpperCase();
+      
+      document.getElementById('live-clock').textContent = formatted;
+    }
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ============================================
+    // EXPANDABLE ROLE CARDS
+    // ============================================
+    const roleCards = document.querySelectorAll('.role-card');
+    const navItems = document.querySelectorAll('.role-nav-item');
+    
+    roleCards.forEach((card, index) => {
+      const header = card.querySelector('.role-card-header');
+      const expanded = card.querySelector('.role-expanded');
+      const expandIcon = card.querySelector('.expand-icon');
+      
+      header.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Toggle expanded state
+        const isExpanded = expanded.classList.contains('active');
+        
+        // Close all other expanded cards
+        document.querySelectorAll('.role-expanded.active').forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        document.querySelectorAll('.expand-icon').forEach(icon => {
+          icon.textContent = '+';
+        });
+        
+        // If not expanded, open this one
+        if (!isExpanded) {
+          expanded.classList.add('active');
+          expandIcon.textContent = '−';
+          
+          // Update active nav
+          navItems.forEach(item => item.classList.remove('active'));
+          if (navItems[index]) {
+            navItems[index].classList.add('active');
+          }
+        } else {
+          // If it was expanded, we're closing it (already removed active above)
+          // Update active nav to none
+          navItems.forEach(item => item.classList.remove('active'));
+        }
+      });
+    });
+
+    // ============================================
+    // NAVIGATION SCROLL
+    // ============================================
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        
+        if (targetId === '#apply-form') {
+          document.getElementById('apply-form').scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+        
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          // Find the card and expand it
+          const card = targetElement.closest('.role-card');
+          const expanded = card.querySelector('.role-expanded');
+          const expandIcon = card.querySelector('.expand-icon');
+          
+          // Close all expanded
+          document.querySelectorAll('.role-expanded.active').forEach(el => {
+            el.classList.remove('active');
+          });
+          document.querySelectorAll('.expand-icon').forEach(icon => {
+            icon.textContent = '+';
+          });
+          
+          // Open this one
+          expanded.classList.add('active');
+          expandIcon.textContent = '−';
+          
+          // Update active nav
+          navItems.forEach(nav => nav.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Scroll to it
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ============================================
+    // UPDATE OPEN POSITIONS COUNT
+    // ============================================
+    function updateOpenPositions() {
+      const openRoles = document.querySelectorAll('.status-OPEN').length / 2; // Each role has 2 OPEN badges
+      document.getElementById('open-positions-count').textContent = 
+        `${openRoles} POSITION${openRoles !== 1 ? 'S' : ''} CURRENTLY OPEN`;
+    }
+    
+    updateOpenPositions();
+
+    // ============================================
+    // HANDLE ANCHOR ON PAGE LOAD
+    // ============================================
+    if (window.location.hash) {
+      setTimeout(function() {
+        const hash = window.location.hash;
+        
+        if (hash === '#apply-form') {
+          document.getElementById('apply-form').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          const targetElement = document.querySelector(hash);
+          if (targetElement) {
+            const card = targetElement.closest('.role-card');
+            const expanded = card.querySelector('.role-expanded');
+            const expandIcon = card.querySelector('.expand-icon');
+            
+            // Open this card
+            expanded.classList.add('active');
+            expandIcon.textContent = '−';
+            
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>
