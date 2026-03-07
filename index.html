@@ -1,73 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE CONTROL ROOM — Strategic Systems & Operational Intelligence</title>
-
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Control Room — Strategic Systems & Operational Intelligence</title>
+  <meta name="description" content="Strategic systems for organizations that demand clarity, structure, and operational control." />
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
-    /* Custom CSS Variables and Animations */
+    /* Custom CSS Variables and Base Styles */
     :root {
-      --background: 43 33% 93%;
-      --foreground: 0 0% 8%;
-      --primary: 0 0% 8%;
-      --primary-foreground: 43 33% 93%;
-      --border: 0 0% 8%;
+      --background: 43, 33%, 93%;
+      --foreground: 0, 0%, 8%;
+      --card: 43, 33%, 93%;
+      --card-foreground: 0, 0%, 8%;
+      --popover: 43, 33%, 93%;
+      --popover-foreground: 0, 0%, 8%;
+      --primary: 0, 0%, 8%;
+      --primary-foreground: 43, 33%, 93%;
+      --secondary: 43, 25%, 88%;
+      --secondary-foreground: 0, 0%, 8%;
+      --muted: 43, 20%, 85%;
+      --muted-foreground: 0, 0%, 40%;
+      --accent: 43, 25%, 88%;
+      --accent-foreground: 0, 0%, 8%;
+      --destructive: 0, 84.2%, 60.2%;
+      --destructive-foreground: 210, 40%, 98%;
+      --border: 0, 0%, 20%;
+      --input: 0, 0%, 20%;
+      --ring: 0, 0%, 8%;
+      --radius: 0px;
+      --section-dark: 220, 20%, 12%;
+      --section-dark-foreground: 43, 33%, 93%;
+      --warm-accent: 30, 60%, 32%;
+      --warm-accent-foreground: 43, 33%, 93%;
+    }
+
+    .dark {
+      --background: 220, 20%, 10%;
+      --foreground: 43, 33%, 93%;
+      --card: 220, 18%, 14%;
+      --card-foreground: 43, 33%, 93%;
+      --popover: 220, 18%, 14%;
+      --popover-foreground: 43, 33%, 93%;
+      --primary: 43, 33%, 93%;
+      --primary-foreground: 220, 20%, 10%;
+      --secondary: 220, 15%, 18%;
+      --secondary-foreground: 43, 33%, 93%;
+      --muted: 220, 15%, 18%;
+      --muted-foreground: 43, 15%, 65%;
+      --accent: 220, 15%, 18%;
+      --accent-foreground: 43, 33%, 93%;
+      --border: 220, 10%, 25%;
+      --input: 220, 10%, 25%;
+      --ring: 43, 33%, 93%;
+      --section-dark: 220, 25%, 8%;
+      --section-dark-foreground: 43, 33%, 93%;
+      --warm-accent: 30, 60%, 45%;
+      --warm-accent-foreground: 0, 0%, 100%;
     }
 
     /* Base styles */
+    * {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
     body {
-      background-color: hsl(43, 33%, 93%);
-      color: hsl(0, 0%, 8%);
-      font-family: 'DM Sans', sans-serif;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      min-height: 100vh;
     }
 
     h1, h2, h3, h4, h5, h6 {
       font-family: 'Playfair Display', serif;
     }
 
-    .font-mono {
-      font-family: 'Space Mono', monospace !important;
+    .font-display {
+      font-family: 'Playfair Display', serif;
     }
 
+    .font-mono-custom {
+      font-family: 'DM Mono', monospace;
+    }
+
+    .font-body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Border and background utilities */
     .border-foreground {
-      border-color: hsl(0, 0%, 8%);
+      border-color: hsl(var(--foreground)) !important;
+    }
+
+    .border-foreground\/10 {
+      border-color: hsla(var(--foreground), 0.1) !important;
+    }
+
+    .border-foreground\/20 {
+      border-color: hsla(var(--foreground), 0.2) !important;
+    }
+
+    .border-foreground\/30 {
+      border-color: hsla(var(--foreground), 0.3) !important;
+    }
+
+    .bg-background {
+      background-color: hsl(var(--background));
+    }
+
+    .text-foreground {
+      color: hsl(var(--foreground));
+    }
+
+    .text-muted-foreground {
+      color: hsl(var(--muted-foreground));
     }
 
     .bg-primary {
-      background-color: hsl(0, 0%, 8%);
+      background-color: hsl(var(--primary));
     }
 
     .text-primary-foreground {
-      color: hsl(43, 33%, 93%);
+      color: hsl(var(--primary-foreground));
     }
 
-    .bg-primary-foreground {
-      background-color: hsl(43, 33%, 93%);
+    .bg-secondary {
+      background-color: hsl(var(--secondary));
     }
 
-    .text-primary {
-      color: hsl(0, 0%, 8%);
+    /* Custom button styles */
+    .btn-editorial {
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      border: none;
+      cursor: pointer;
     }
 
-    .divide-foreground > :not([hidden]) ~ :not([hidden]) {
-      border-color: hsl(0, 0%, 8%);
+    .btn-editorial:hover {
+      opacity: 0.8;
     }
 
-    /* Marquee animation */
+    .btn-editorial-outline {
+      border: 1px solid hsl(var(--foreground));
+      color: hsl(var(--foreground));
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      background: transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-editorial-outline:hover {
+      background-color: hsl(var(--foreground));
+      color: hsl(var(--background));
+    }
+
+    .btn-warm {
+      background-color: hsl(var(--warm-accent));
+      color: hsl(var(--warm-accent-foreground));
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-warm:hover {
+      opacity: 0.8;
+    }
+
+    .btn-warm-outline {
+      border: 1px solid hsl(var(--warm-accent));
+      color: hsl(var(--warm-accent));
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      background: transparent;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-warm-outline:hover {
+      opacity: 0.8;
+    }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid hsl(var(--foreground));
+      border-radius: 999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: hsl(var(--foreground));
+    }
+
+    .theme-toggle:hover {
+      opacity: 0.7;
+    }
+
+    /* Section dark */
+    .section-dark {
+      background-color: hsl(var(--section-dark));
+      color: hsl(var(--section-dark-foreground));
+    }
+
+    /* Divide colors */
+    .divide-foreground\/20 > :not([hidden]) ~ :not([hidden]) {
+      border-color: hsla(var(--foreground), 0.2);
+    }
+
+    /* First letter styling */
+    .first-letter-large::first-letter {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      float: left;
+      margin-right: 0.5rem;
+      line-height: 1;
+    }
+
+    /* Editorial borders */
+    .editorial-border {
+      border: 1px solid hsla(var(--foreground), 0.2);
+    }
+
+    .editorial-border-strong {
+      border: 1px solid hsl(var(--foreground));
+    }
+
+    /* Marquee animation for sliding banner */
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -81,538 +267,1646 @@
       animation-play-state: paused;
     }
 
-    /* Custom first letter styling */
-    .first-letter\:text-5xl::first-letter {
-      font-size: 3rem;
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      float: left;
-      margin-right: 0.5rem;
-      line-height: 1;
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
 
-    /* Transitions */
-    .transition-opacity {
-      transition-property: opacity;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
-    .transition-colors {
-      transition-property: background-color, border-color, color, fill, stroke;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 200ms;
+    .modal-content {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 2px solid hsl(var(--foreground));
+      padding: 2rem;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
     }
 
-    .hover\:opacity-60:hover {
-      opacity: 0.6;
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
     }
 
-    .hover\:opacity-70:hover {
-      opacity: 0.7;
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: 1px solid hsl(var(--foreground));
+      color: hsl(var(--foreground));
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
     }
 
-    .hover\:opacity-90:hover {
-      opacity: 0.9;
+    .modal-close:hover {
+      background-color: hsl(var(--foreground));
+      color: hsl(var(--background));
     }
 
-    .hover\:bg-foreground:hover {
-      background-color: hsl(0, 0%, 8%);
-    }
-
-    .hover\:text-background:hover {
-      color: hsl(43, 33%, 93%);
-    }
-    
     /* Image styling */
-    .object-cover {
+    .service-image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
-    
-    /* Tactical image border */
-    .tactical-image {
-      border: 2px solid hsl(0, 0%, 8%);
-      position: relative;
-    }
-    
-    .tactical-image::after {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      right: 4px;
-      bottom: 4px;
-      border: 1px solid hsl(43, 33%, 93%);
-      pointer-events: none;
-      opacity: 0.3;
+
+    .image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: hsl(var(--secondary));
+      color: hsl(var(--muted-foreground));
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
   </style>
 </head>
-<body class="min-h-screen">
-  <!-- Main Container -->
-  <div class="min-h-screen bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)]">
-
-    <!-- ============================================ -->
-    <!-- HEADER COMPONENT (from Header.tsx)          -->
-    <!-- ============================================ -->
-    
-    <!-- TopBar with REAL-TIME CLOCK -->
-    <div class="border-b border-[hsl(0,0%,8%)]">
-      <div class="flex items-center justify-between px-4 md:px-8 py-2 text-xs font-mono tracking-widest uppercase">
-        <span id="live-clock">LOADING...</span>
-        <span>ISSUE 01</span>
-      </div>
-      <div class="text-center py-2 border-t border-[hsl(0,0%,8%)]">
-        <p class="text-xs font-mono tracking-[0.3em] uppercase">
-          Strategic Systems & Operational Intelligence
-        </p>
-      </div>
-    </div>
-
-    <!-- Masthead -->
-    <div class="text-center py-8 md:py-12 border-b border-[hsl(0,0%,8%)]">
-      <h1 class="font-['Playfair_Display'] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-        THE CONTROL<br />ROOM
-      </h1>
-    </div>
-
-    <!-- NavBar -->
-    <div class="border-b border-[hsl(0,0%,8%)]">
-      <div class="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-3 gap-2 text-xs font-mono tracking-wider uppercase">
-        <div class="flex items-center gap-2">
-          <span>📍</span> <span>TACTICAL ANALYSIS</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span>📞</span> <span>CALCULATED ACTION PLAN</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span>✉️</span> <span>OPTIMISED RESULTS</span>
+<body>
+  <div id="root" class="min-h-screen bg-background text-foreground">
+    <div class="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <!-- Modal Container -->
+      <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content" id="modal-content">
+          <button class="modal-close" id="modal-close">×</button>
+          <div id="modal-body"></div>
         </div>
       </div>
-    </div>
 
-    <!-- IndexSection -->
-    <div class="border-b border-[hsl(0,0%,8%)]">
-      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
-
-        <!-- Column 1 -->
-        <div class="px-4 md:px-8 py-4">
-          <h3 class="font-['Playfair_Display'] text-lg font-bold mb-2">INDEX</h3>
-          <div class="flex flex-col gap-2">
-            <a href="how-we-work.html" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
-              HOW WE WORK
-            </a>
-            <a href="how-we-work.html#problem" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
-              PROBLEM
-            </a>
-            <a href="how-we-work.html#solution" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
-              SOLUTION
-            </a>
-            <a href="how-we-work.html#outcome" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
-              OUTCOME
-            </a>
+      <!-- Consolidated Header -->
+      <div class="w-full border-b border-foreground/20">
+        <!-- Top Bar with EST. 2024, Strategic Systems, and Clock -->
+        <div class="border-b border-foreground/20 py-2 px-4 md:px-8">
+          <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="font-mono-custom text-[10px] tracking-widest uppercase text-muted-foreground">
+              EST. 2024
+            </span>
+            <span class="font-mono-custom text-[10px] md:text-xs tracking-[0.3em] uppercase text-foreground">
+              Strategic Systems & Operational Intelligence
+            </span>
+            <span id="live-clock" class="font-mono-custom text-[10px] tracking-widest uppercase text-foreground">
+              TODAY: LOADING...
+            </span>
           </div>
         </div>
-
-        <!-- Column 2 -->
-        <div class="px-4 md:px-8 py-4">
-          <h3 class="font-['Playfair_Display'] text-sm font-bold mb-2 uppercase">
-            Book an Appointment
-          </h3>
-          <div class="flex flex-col gap-2">
-            <a href="#book-appointment" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity">
-              SCHEDULE CONSULTATION
-            </a>
-            <a href="#request-a-call" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity">
-              REQUEST STRATEGY CALL
-            </a>
-          </div>
-        </div>
-
-        <!-- Column 3 -->
-        <div class="px-4 md:px-8 py-4">
-          <h3 class="font-['Playfair_Display'] text-sm font-bold mb-2 uppercase">
-            Our Work
-          </h3>
-          <div class="flex flex-col gap-2">
-            <a href="archives.html" class="text-xs font-mono uppercase tracking-wider text-left py-1 hover:opacity-60 transition-opacity focus:outline-none">
-              ARCHIVES
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- HERO SECTION (from HeroSection.tsx)         -->
-    <!-- ============================================ -->
-
-    <section class="border-b border-[hsl(0,0%,8%)]">
-      <div class="grid grid-cols-1 lg:grid-cols-2">
         
-        <!-- Left Column -->
-        <div class="p-6 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[hsl(0,0%,8%)]">
-          <p class="text-xs font-mono tracking-widest uppercase mb-4">
-            BRIEFING NOTES
-          </p>
+        <!-- Main Title -->
+        <div class="text-center py-8 md:py-12 border-b border-foreground/20">
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight uppercase">
+            The Control Room
+          </h1>
+        </div>
 
-          <h2 class="font-['Playfair_Display'] text-6xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-8">
-            ONE<br />STORY.<br />ONE<br />SYSTEM.
-          </h2>
-
-          <blockquote class="font-['Playfair_Display'] italic text-lg md:text-xl mb-8 border-l-2 border-[hsl(0,0%,8%)] pl-4">
-            "Visibility without structure collapses.<br />We build both."
-          </blockquote>
-
-          <!-- HERO IMAGE - with tactical styling -->
-          <div class="w-full aspect-video tactical-image overflow-hidden" id="book-appointment">
-            <img 
-              src="assets/images/hero-image.jpg" 
-              alt="Strategic documents on control room desk"
-              class="w-full h-full object-cover"
-              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-[hsl(0,0%,15%)] flex items-center justify-center\'><span class=\'text-[hsl(43,33%,93%)] text-xs font-mono\'>[HERO IMAGE PENDING]</span></div>'"
-            >
-          </div>
-
-          <div class="flex justify-between mt-4 text-[10px] font-mono tracking-widest uppercase">
-            <span>FIG 1.1: SYSTEM ARCHITECTURE</span>
-            <span>PHOTO: ARCHIVE</span>
+        <!-- Contact Bar -->
+        <div class="border-b border-foreground/20 py-3 px-4 md:px-8">
+          <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-xs font-mono-custom tracking-wide">
+            <span class="flex items-center gap-1">📧 thecontrolroom.agency@gmail.com</span>
+            <span class="flex items-center gap-1">📍 Mumbai</span>
+            <span class="flex items-center gap-1">📞 +91 7879 186506</span>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="p-6 md:p-10 lg:p-12">
-          <p class="text-xs font-mono tracking-widest uppercase mb-6">
-            BRIEFING NOTES
-          </p>
-
-          <div class="mb-10 space-y-6">
-            <p class="font-['DM_Sans'] text-sm leading-relaxed first-letter:text-5xl first-letter:font-['Playfair_Display'] first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:leading-none">
-              Here at The Control Room, we combine the force of visual media and
-              technology to shape, sharpen, and elevate your story. We operate as
-              two parallel units working in complete alignment.
-            </p>
-
-            <p class="font-['DM_Sans'] text-sm leading-relaxed">
-              Communication and Infrastructure. Creative and system. Not separate
-              services. One unified alliance built around your objective.
-            </p>
-
-            <p class="font-['DM_Sans'] text-sm leading-relaxed">
-              We do not believe in generic marketing aimed at "everyone". We
-              identify the exact audience that matters to you. We study them. We
-              understand where they exist, how they think, and what moves them.
-              Then we build communication that speaks directly to them.
-            </p>
-
-            <p class="font-['DM_Sans'] text-sm leading-relaxed">
-              Beyond visibility, we build the systems that welcome your people in.
-              Websites. Platforms. Funnels. Backend structures. Operational flows.
-            </p>
-
-            <p class="font-['DM_Sans'] text-sm leading-relaxed">
-              If there are technical gaps, inefficiencies, or revenue leaks in
-              your ecosystem, we identify them and fix them.
-            </p>
-
-            <p class="font-['DM_Sans'] text-sm leading-relaxed font-semibold">
-              In short, <br />
-              We build both <br />
-              A clear narrative and a working system.<br />
-            </p>
+        <!-- Index Navigation -->
+        <div class="border-b border-foreground/20 py-4 px-4 md:px-8">
+          <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <h3 class="font-display text-lg font-bold mb-2">INDEX</h3>
+              <div class="font-mono-custom text-xs space-y-1 text-muted-foreground">
+                <p><a href="how-we-work.html" class="hover:text-foreground cursor-pointer transition-colors">• HOW WE WORK</a></p>
+                <p><a href="archives.html" class="hover:text-foreground cursor-pointer transition-colors">• ARCHIVES</a></p>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display text-lg font-bold mb-2">APPOINTMENT</h3>
+              <div class="font-mono-custom text-xs space-y-1 text-muted-foreground">
+                <p><a href="#start-proposal" class="hover:text-foreground cursor-pointer transition-colors">• START YOUR PROPOSAL</a></p>
+                <p><a href="#submit-inquiry" class="hover:text-foreground cursor-pointer transition-colors">• SCHEDULE A CONSULTATION</a></p>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display text-lg font-bold mb-2">OUR WORK</h3>
+              <div class="font-mono-custom text-xs space-y-1 text-muted-foreground">
+                <p><a href="#case-studies" class="hover:text-foreground cursor-pointer transition-colors">• CASE STUDIES</a></p>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <!-- Appointment Card -->
-          <div class="w-full aspect-video">
-            <div class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] p-6 h-full flex flex-col justify-between">
-              
-              <div>
-                <h3 class="font-['Playfair_Display'] text-xl font-bold mb-3">
-                  BOOK AN APPOINTMENT
-                </h3>
+      <!-- HeroBanner Component with Toggle -->
+      <section class="w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 bg-secondary/50">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6" style="color: hsl(30, 60%, 32%)">
+            Automation Systems and Strategic<br />
+            Content Infrastructure
+          </h2>
+          <p class="text-sm md:text-base font-body text-muted-foreground max-w-2xl mx-auto mb-8">
+            We build the systems that bring customers in and the content that keeps them engaged.
+          </p>
+          <div class="flex items-center justify-center gap-4">
+            <span class="font-mono-custom text-sm font-semibold text-foreground">CONTENT</span>
+            <button id="theme-toggle" class="relative w-16 h-8 rounded-full bg-foreground/20 border border-foreground/30 focus:outline-none">
+              <span class="absolute left-1 top-1 w-6 h-6 rounded-full bg-foreground transition-transform duration-300 dark:translate-x-8"></span>
+            </button>
+            <span class="font-mono-custom text-sm font-semibold text-foreground">TECH</span>
+          </div>
+        </div>
+      </section>
 
-                <p class="text-xs font-['DM_Sans'] mb-6 leading-relaxed opacity-80">
-                  Reactive strategies are no longer sufficient. The modern
-                  landscape demands predictive capability. Schedule a consultation
-                  to discuss your strategic needs.
-                </p>
+      <!-- Day/Night Service Blocks Container (for night mode only) -->
+      <div id="services-container">
+        <!-- Alternative Services Section (5 items) - UPDATED with content from screenshot -->
+        
+        <!-- Content Engine -->
+        <section class="w-full border-b border-foreground/10 px-4 md:px-8 mb-12">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div class="py-8 md:py-12">
+              <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Content Engine</h3>
+              <div class="space-y-4 text-sm font-body">
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                  <p class="text-muted-foreground">Your brand is invisible online.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+                  <p class="text-muted-foreground">Strategic content that positions you as the expert.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+                  <p class="text-muted-foreground">People know who you are. They trust you.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                  <ul class="text-muted-foreground space-y-1">
+                    <li>• Build authority</li>
+                    <li>• Attract right customers</li>
+                    <li>• Stand out from competitors</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex gap-3 mt-6">
+                <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="content-engine">View Case Study</button>
+                <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+              </div>
+            </div>
+            <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+              <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=800&auto=format" alt="Content Engine" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Content Engine</span>'">
+            </div>
+          </div>
+        </section>
 
-                <div class="space-y-3">
-                  <input type="text" placeholder="Your Name" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="John Doe" />
-                  <input type="email" placeholder="Email Address" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="john@example.com" />
-                  <input type="tel" placeholder="Phone Number" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="+91 98765 43210" />
-                  <input type="text" placeholder="dd-mm-yyyy" class="w-full bg-transparent border border-[hsl(43,33%,93%)/30] px-3 py-2 text-xs font-mono placeholder:text-[hsl(43,33%,93%)/50] focus:outline-none focus:border-[hsl(43,33%,93%)]" value="19-02-2026" />
+        <!-- Video Production -->
+        <section class="w-full border-b border-foreground/10 px-4 md:px-8 mb-12">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full order-2 md:order-1">
+              <img src="https://images.unsplash.com/photo-1492618195919-5c7e7d6e2f8c?w=800&auto=format" alt="Video Production" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Video</span>'">
+            </div>
+            <div class="py-8 md:py-12 order-1 md:order-2">
+              <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Video Production</h3>
+              <div class="space-y-4 text-sm font-body">
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                  <p class="text-muted-foreground">Text doesn't convert. Video does.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+                  <p class="text-muted-foreground">Professional videos that tell your story and drive action.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+                  <p class="text-muted-foreground">Higher engagement. More conversions. Better ROI.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                  <ul class="text-muted-foreground space-y-1">
+                    <li>• Increase engagement by 50%</li>
+                    <li>• Boost conversion rates</li>
+                    <li>• Build emotional connection</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex gap-3 mt-6">
+                <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="video-production">View Case Study</button>
+                <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Social Media Presence -->
+        <section class="w-full border-b border-foreground/10 px-4 md:px-8 mb-12">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div class="py-8 md:py-12">
+              <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Social Media Presence</h3>
+              <div class="space-y-4 text-sm font-body">
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                  <p class="text-muted-foreground">Your social channels are empty or inconsistent.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+                  <p class="text-muted-foreground">Consistent, strategic posting that builds community.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+                  <p class="text-muted-foreground">Active followers. Real engagement. Brand loyalty.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                  <ul class="text-muted-foreground space-y-1">
+                    <li>• Grow audience 3x</li>
+                    <li>• Increase engagement</li>
+                    <li>• Build community</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex gap-3 mt-6">
+                <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="social-media-presence">View Case Study</button>
+                <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+              </div>
+            </div>
+            <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+              <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format" alt="Social Media" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Social</span>'">
+            </div>
+          </div>
+        </section>
+
+        <!-- Brand Story Development -->
+        <section class="w-full border-b border-foreground/10 px-4 md:px-8 mb-12">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full order-2 md:order-1">
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format" alt="Brand Story" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Brand</span>'">
+            </div>
+            <div class="py-8 md:py-12 order-1 md:order-2">
+              <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Brand Story Development</h3>
+              <div class="space-y-4 text-sm font-body">
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                  <p class="text-muted-foreground">Your story gets lost in the noise.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+                  <p class="text-muted-foreground">Clear, compelling brand narrative that resonates.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+                  <p class="text-muted-foreground">People connect with your mission. They become advocates.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                  <ul class="text-muted-foreground space-y-1">
+                    <li>• Create emotional connection</li>
+                    <li>• Build brand loyalty</li>
+                    <li>• Attract ideal customers</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex gap-3 mt-6">
+                <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="brand-story">View Case Study</button>
+                <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Service Packages (Alternative) -->
+        <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div class="py-8 md:py-12">
+              <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Service Packages</h3>
+              <div class="space-y-4 text-sm font-body">
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Content Only</p>
+                  <p class="text-muted-foreground">Strategic written content</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Video Only</p>
+                  <p class="text-muted-foreground">Clarity, compelling brand narrative that resonates.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Social Only</p>
+                  <p class="text-muted-foreground">People connect with your mission. They become advocates.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Launch Only</p>
+                  <p class="text-muted-foreground">Launch digital marketing campaigns across all channels.</p>
+                </div>
+                <div>
+                  <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Full Visibility</p>
+                  <p class="text-muted-foreground">Everything included</p>
+                </div>
+              </div>
+              <div class="flex gap-3 mt-6">
+                <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="service-packages">View Case Study</button>
+                <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+              </div>
+            </div>
+            <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+              <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format" alt="Service Packages" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Packages</span>'">
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ServicePackages Component -->
+      <div id="service-packages">
+        <section id="case-studies" class="w-full py-16 px-4 md:px-8 border-b border-foreground/10">
+          <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-12">
+              Service Packages
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <!-- Content Only -->
+              <div class="border border-foreground/20 p-5 flex flex-col">
+                <h4 class="font-display text-base font-bold mb-3 italic">Content Only</h4>
+                <div class="text-[11px] font-body space-y-3 flex-1">
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                    <p class="text-muted-foreground leading-relaxed">You need a content presence, SEO growth, authority positioning.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                    <p class="text-muted-foreground leading-relaxed">Strategic, research-driven content, crafted for audience clarity and SEO efficiency. Ideal for teams that want results without the overhead.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                    <ul class="text-muted-foreground space-y-0.5">
+                      <li>• SEO visibility</li>
+                      <li>• Brand authority</li>
+                      <li>• Lead generation</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="content-only">View Case Study</button>
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
                 </div>
               </div>
 
-              <button class="mt-4 w-full bg-[hsl(43,33%,93%)] text-[hsl(0,0%,8%)] py-2 text-xs font-mono tracking-widest uppercase hover:opacity-90 transition-opacity">
-                BOOK APPOINTMENT
-              </button>
+              <!-- Video Only -->
+              <div class="border border-foreground/20 p-5 flex flex-col">
+                <h4 class="font-display text-base font-bold mb-3 italic">Video Only</h4>
+                <div class="text-[11px] font-body space-y-3 flex-1">
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                    <p class="text-muted-foreground leading-relaxed">You know visual storytelling matters. You just don't have the tools.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                    <p class="text-muted-foreground leading-relaxed">Production-level video crafted for brand narrative and multi-platform delivery. From concept to final cut.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                    <ul class="text-muted-foreground space-y-0.5">
+                      <li>• Brand storytelling</li>
+                      <li>• Multi-platform content</li>
+                      <li>• Audience engagement</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="video-only">View Case Study</button>
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+                </div>
+              </div>
+
+              <!-- Social Media Engine -->
+              <div class="border border-foreground/20 p-5 flex flex-col">
+                <h4 class="font-display text-base font-bold mb-3 italic">Social Media Engine</h4>
+                <div class="text-[11px] font-body space-y-3 flex-1">
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                    <p class="text-muted-foreground leading-relaxed">Your social presence is inconsistent. No clear strategy.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                    <p class="text-muted-foreground leading-relaxed">Daily-to-weekly social media management across platforms. From strategy to scheduling to performance analytics.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                    <ul class="text-muted-foreground space-y-0.5">
+                      <li>• Consistent presence</li>
+                      <li>• Community growth</li>
+                      <li>• Platform optimization</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="social-media">View Case Study</button>
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+                </div>
+              </div>
+
+              <!-- Launch Campaigns -->
+              <div class="border border-foreground/20 p-5 flex flex-col">
+                <h4 class="font-display text-base font-bold mb-3 italic">Launch Campaigns</h4>
+                <div class="text-[11px] font-body space-y-3 flex-1">
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                    <p class="text-muted-foreground leading-relaxed">Launching soon. No visibility, no social strategy, no content plan.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                    <p class="text-muted-foreground leading-relaxed">Complete launch support: content, social, email launch sequence. Full visibility for your launch moment.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                    <ul class="text-muted-foreground space-y-0.5">
+                      <li>• Pre-launch buzz</li>
+                      <li>• Launch visibility</li>
+                      <li>• Momentum building</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="launch">View Case Study</button>
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+                </div>
+              </div>
+
+              <!-- Full Visibility System -->
+              <div class="border border-foreground/20 p-5 flex flex-col">
+                <h4 class="font-display text-base font-bold mb-3 italic">Full Visibility System</h4>
+                <div class="text-[11px] font-body space-y-3 flex-1">
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                    <p class="text-muted-foreground leading-relaxed">You need it all. Content, video, social, campaigns. Full infrastructure.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                    <p class="text-muted-foreground leading-relaxed">Custom video, social, and managed content. Full visibility operations at scale. Enterprise-grade systems.</p>
+                  </div>
+                  <div>
+                    <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                    <ul class="text-muted-foreground space-y-0.5">
+                      <li>• Complete infrastructure</li>
+                      <li>• Scalable systems</li>
+                      <li>• Maximum visibility</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="full-visibility">View Case Study</button>
+                  <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+                </div>
+              </div>
             </div>
           </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- PROBLEM/SOLUTION SECTION (from ProblemSolutionSection.tsx) -->
-    <!-- ============================================ -->
-    
-    <section class="border-b border-[hsl(0,0%,8%)]">
-      
-      <!-- Two Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)] border-t border-[hsl(0,0%,8%)]">
-        <div class="p-6 md:p-8">
-          <h3 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-3">How We Work</h3>
-          <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
-            We diagnose. We define the objective. We build the structure. We execute with precision. 
-            We refine based on results. Strategy and systems move together. Always.
-          </p>
-          <a href="how-we-work.html" class="text-xs font-mono tracking-widest uppercase flex items-center gap-1 hover:opacity-70 transition-opacity">
-            UNDERSTAND THE FRAMEWORK <span class="text-xs">→</span>
-          </a>
-        </div>
-
-        <div class="p-6 md:p-8">
-          <h3 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-3">Our Work</h3>
-          <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
-            Our work spans political positioning, real estate launches, product rollouts, and system 
-            restructuring. Every engagement is built around one objective: measurable influence supported 
-            by reliable systems.
-          </p>
-          <a href="archives.html" class="text-xs font-mono tracking-widest uppercase flex items-center gap-1 hover:opacity-70 transition-opacity">
-            VIEW SELECTED ENGAGEMENTS <span class="text-xs">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- ALLIANCES SECTION (from AlliancesSection.tsx) -->
-    <!-- ============================================ -->
-    
-    <section class="py-12 border-b border-[hsl(0,0%,8%)]">
-      <div class="flex items-center gap-4 px-8 mb-8">
-        <div class="h-px flex-1 bg-[hsl(0,0%,8%)]"></div>
-        <h2 class="font-['Playfair_Display'] text-2xl md:text-3xl font-bold tracking-wider uppercase whitespace-nowrap">
-          OUR ALLIANCES
-        </h2>
-        <div class="h-px flex-1 bg-[hsl(0,0%,8%)]"></div>
+        </section>
       </div>
 
-      <div class="overflow-hidden py-6">
-        <div class="flex w-max animate-marquee">
-          <!-- Alliance Logos - 14 logos as per your structure -->
-          <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTwvdGV4dD48L3N2Zz4='; this.classList.add('placeholder-logo');">
-          <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMjwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMzwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNDwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNTwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNjwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNzwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gODwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gOTwvdGV4dD48L3N2Zz4=';">
-          <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTA8L3RleHQ+PC9zdmc+';">
-          <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTE8L3RleHQ+PC9zdmc+';">
-          <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTI8L3RleHQ+PC9zdmc+';">
-          <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTM8L3RleHQ+PC9zdmc+';">
-          <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTQ8L3RleHQ+PC9zdmc+';">
+      <!-- AlliancesSection with Sliding Banner (Marquee) -->
+      <section class="w-full border-b border-foreground/20 py-12 px-4 md:px-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex items-center gap-4 mb-10">
+            <div class="flex-1 h-px bg-foreground/20"></div>
+            <h2 class="font-display text-2xl md:text-3xl font-bold tracking-widest uppercase whitespace-nowrap">
+              Our Alliance's
+            </h2>
+            <div class="flex-1 h-px bg-foreground/20"></div>
+          </div>
           
-          <!-- Duplicate set for seamless marquee loop -->
-          <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
-          <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+          <!-- Sliding Marquee Banner with Local Logos -->
+          <div class="overflow-hidden py-6">
+            <div class="flex w-max animate-marquee">
+              <!-- First set of logos (1-14) -->
+              <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMjwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMzwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNDwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNTwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNjwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gNzwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gODwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gOTwvdGV4dD48L3N2Zz4=';">
+              <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTA8L3RleHQ+PC9zdmc+';">
+              <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTE8L3RleHQ+PC9zdmc+';">
+              <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTI8L3RleHQ+PC9zdmc+';">
+              <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTM8L3RleHQ+PC9zdmc+';">
+              <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMyMjIyMjIiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJNb25vLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNmNWYwZTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkxPR08gMTQ8L3RleHQ+PC9zdmc+';">
+              
+              <!-- Duplicate set for seamless marquee loop -->
+              <img src="assets/logos/1.png" alt="Alliance Partner 1" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/2.png" alt="Alliance Partner 2" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/3.png" alt="Alliance Partner 3" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/4.png" alt="Alliance Partner 4" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/5.png" alt="Alliance Partner 5" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/6.png" alt="Alliance Partner 6" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/7.png" alt="Alliance Partner 7" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/8.png" alt="Alliance Partner 8" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/9.png" alt="Alliance Partner 9" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/10.png" alt="Alliance Partner 10" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/11.png" alt="Alliance Partner 11" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/12.png" alt="Alliance Partner 12" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/13.png" alt="Alliance Partner 13" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+              <img src="assets/logos/14.png" alt="Alliance Partner 14" class="mx-8 h-12 md:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" onerror="this.onerror=null; this.style.display='none';">
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ============================================ -->
-    <!-- STRATEGIC INTELLIGENCE (from StrategicIntelligence.tsx) -->
-    <!-- ============================================ -->
-    
-    <section class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] border-b border-[hsl(0,0%,8%)]">
-      <div class="grid grid-cols-1 lg:grid-cols-3">
-        <div class="lg:col-span-2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-          <h2 class="font-['Playfair_Display'] text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight mb-6 tracking-tight text-center lg:text-left">
-            STRATEGIC<br />INTELLIGENCE
+      <!-- ProposalForm Component -->
+      <section id="start-proposal" class="w-full py-16 md:py-20 px-4 md:px-8 bg-secondary/40">
+        <div class="max-w-xl mx-auto">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-2">
+            Start Your Proposal
           </h2>
-          <p class="text-sm font-['DM_Sans'] leading-relaxed opacity-80 max-w-xl mb-8 text-center lg:text-left mx-auto lg:mx-0">
-            In-depth analysis of systemic challenges facing modern organizations. Our strategic articles 
-            examine the intersection of structure, visibility, and control in complex operational environments.
+          <p class="text-center text-sm font-body text-muted-foreground mb-10">
+            Tell us about your challenge. We'll build you a solution.
           </p>
-          <div class="text-center lg:text-left">
-            <a href="archives.html" class="border border-[hsl(43,33%,93%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(43,33%,93%)] hover:text-[hsl(0,0%,8%)] transition-colors">
-              ACCESS ARCHIVES
-            </a>
-          </div>
-        </div>
-        
-        <!-- STRATEGIC ICON -->
-        <div class="flex items-center justify-center p-8 lg:p-12">
-          <div class="w-48 h-48 md:w-56 md:h-56 tactical-image overflow-hidden rounded-none">
-            <img 
-              src="assets/strategic-icon.jpg" 
-              alt="Strategic Intelligence Icon"
-              class="w-full h-full object-cover"
-              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-[hsl(43,33%,93%)/10] flex items-center justify-center text-[hsl(43,33%,93%)/50] text-xs font-mono\'>[INTEL ICON]</div>'"
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- CLASSIFIEDS SECTION (from ClassifiedsSection.tsx) -->
-    <!-- ============================================ -->
-    
-    <section class="border-b border-[hsl(0,0%,8%)]">
-      <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[hsl(0,0%,8%)]">
-
-        <!-- Left - Classifieds -->
-        <div class="p-6 md:p-10">
-          <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase mb-2">CLASSIFIEDS</h2>
-          <p class="text-xs font-mono tracking-widest uppercase mb-6">FORM ID: CR-992-X</p>
-          
-          <div class="mb-6">
-            <h4 class="font-['Playfair_Display'] text-sm font-bold uppercase mb-2">SUBMISSION GUIDELINES</h4>
-            <p class="text-xs font-['DM_Sans'] leading-relaxed mb-4">
-              All inquiries are treated with strict confidentiality. Ensure all fields are completed 
-              accurately for processing. Response time: 24-48 hours.
-            </p>
-            <p class="text-xs font-mono uppercase tracking-wider mb-1">DIRECT LINE:</p>
-            <p class="text-xs font-mono mb-4">+91 7879 186506</p>
-            <p class="text-xs font-mono mb-4">thecontrolroom.agency@gmail.com</p>
-          </div>
-
-          <a href="hiring.html" class="border-2 border-[hsl(0,0%,8%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:bg-[hsl(0,0%,8%)] hover:text-[hsl(43,33%,93%)] transition-colors inline-block">
-            WE ARE HIRING
-          </a>
-        </div>
-
-        <!-- Right - Submit Inquiry -->
-        <div class="p-6 md:p-10" id="request-a-call">
-          <h2 class="font-['Playfair_Display'] text-3xl md:text-4xl font-black uppercase mb-2">REQUEST A CALL</h2>
-          <p class="text-xs font-mono tracking-widest uppercase mb-6">FORM ID: CR-992-X</p>
-          
-          <p class="text-[10px] font-mono tracking-widest uppercase mb-4">
-            CLASSIFIED SUBMISSION FORM — CONFIDENTIAL
-          </p>
-
           <div class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="text-[10px] font-mono uppercase tracking-wider">FULL NAME *</label>
-                <input type="text" value="Jane Smith" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
-              </div>
-              <div>
-                <label class="text-[10px] font-mono uppercase tracking-wider">EMAIL ADDRESS *</label>
-                <input type="email" value="jane.smith@example.com" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
-              </div>
+            <div>
+              <label class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold block mb-1">Name</label>
+              <input type="text" id="proposal-name" placeholder="Enter Your Your name" class="w-full bg-transparent border border-foreground/30 p-3 text-sm font-body focus:outline-none focus:border-foreground" />
             </div>
             <div>
-              <label class="text-[10px] font-mono uppercase tracking-wider">CONTACT NUMBER *</label>
-              <input type="tel" value="+91 98765 12345" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none" />
+              <label class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold block mb-1">Email Address</label>
+              <input type="text" id="proposal-company" placeholder="Enter Your Email Address" class="w-full bg-transparent border border-foreground/30 p-3 text-sm font-body focus:outline-none focus:border-foreground" />
+            </div>
+                        <div>
+              <label class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold block mb-1">Company</label>
+              <input type="text" id="proposal-company" placeholder="Enter Your Your company" class="w-full bg-transparent border border-foreground/30 p-3 text-sm font-body focus:outline-none focus:border-foreground" />
             </div>
             <div>
-              <label class="text-[10px] font-mono uppercase tracking-wider">INQUIRY DETAILS *</label>
-              <textarea rows="4" class="w-full border border-[hsl(0,0%,8%)] bg-transparent px-3 py-2 text-xs font-mono mt-1 focus:outline-none resize-none">Interested in strategic consultation for our organization.</textarea>
+              <label class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold block mb-1">Interested In</label>
+              <select id="proposal-interest" class="w-full bg-transparent border border-foreground/30 p-3 text-sm font-body focus:outline-none focus:border-foreground appearance-none">
+                <option value="">Select a service</option>
+                <option value="content">Content Engine</option>
+                <option value="video">Video Production</option>
+                <option value="social">Social Media Presence</option>
+                <option value="launch">Launch Campaigns</option>
+                <option value="brand">Brand Story Development</option>
+                <option value="full">Full Visibility System</option>
+              </select>
             </div>
-            <button class="bg-[hsl(0,0%,8%)] text-[hsl(43,33%,93%)] px-8 py-3 text-xs font-mono tracking-widest uppercase hover:opacity-90 transition-opacity">
-              REQUEST A CALL
-            </button>
+            <div>
+              <label class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold block mb-1">Describe Your Challenge</label>
+              <textarea id="proposal-challenge" placeholder="What challenges can we help you solve?" class="w-full bg-transparent border border-foreground/30 p-3 text-sm font-body focus:outline-none focus:border-foreground resize-none h-28"></textarea>
+            </div>
+            <button class="btn-warm w-full mt-2">Send Proposal Request</button>
           </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <!-- ClassifiedsSection Component -->
+      <section id="submit-inquiry" class="w-full border-b border-foreground/20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-foreground/20">
+          <!-- Classifieds -->
+          <div class="p-6 md:p-10">
+            <h2 class="font-display text-3xl font-bold uppercase mb-6">Classifieds</h2>
+            <div class="mb-6">
+              <h4 class="font-mono-custom text-xs tracking-widest uppercase mb-2 font-semibold">Authorized Guidelines</h4>
+              <p class="text-sm font-body text-muted-foreground leading-relaxed">
+                All pieces are vetted for structural detail to our E-Table, our publication for the industry. Enquire on a brief of Alliance.
+              </p>
+            </div>
+            <div class="mb-6">
+              <h4 class="font-mono-custom text-xs tracking-widest uppercase mb-1 font-semibold">Direct Line</h4>
+              <p class="text-sm font-body text-muted-foreground">+91 7879 186506</p>
+            </div>
+            <a href="hiring.html"><button class="btn-editorial">We Are Hiring</button></a>
+          </div>
+          <!-- Submit Inquiry -->
+          <div class="p-6 md:p-10">
+            <h2 class="font-display text-3xl font-bold uppercase mb-2">Submit Inquiry</h2>
+            <p class="font-mono-custom text-[10px] tracking-widest uppercase text-muted-foreground mb-6">
+              Private & Confidential
+            </p>
+            <p class="font-mono-custom text-[10px] tracking-widest uppercase text-muted-foreground mb-4">
+              Classified Submission Panel — Confidential
+            </p>
+            <div class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="inquiry-name" placeholder="NAME *" class="bg-transparent border border-foreground/30 p-3 text-xs font-mono-custom focus:outline-none focus:border-foreground" />
+                <input type="email" id="inquiry-email" placeholder="EMAIL *" class="bg-transparent border border-foreground/30 p-3 text-xs font-mono-custom focus:outline-none focus:border-foreground" />
+              </div>
+              <input type="text" id="inquiry-contact" placeholder="CONTACT NUMBER" class="w-full bg-transparent border border-foreground/30 p-3 text-xs font-mono-custom focus:outline-none focus:border-foreground" />
+              <input type="text" id="inquiry-phone" placeholder="PHONE NUMBER *" class="w-full bg-transparent border border-foreground/30 p-3 text-xs font-mono-custom focus:outline-none focus:border-foreground" />
+              <button class="btn-editorial w-full mt-2">Submit Inquiry</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- ============================================ -->
-    <!-- FOOTER (from Footer.tsx)                     -->
-    <!-- ============================================ -->
-    
-    <footer class="border-t border-[hsl(0,0%,8%)]">
-      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[hsl(0,0%,8%)]">
-        <div class="p-6 md:p-8">
-          <h3 class="font-['Playfair_Display'] text-xl font-bold uppercase mb-2">THE CONTROL ROOM</h3>
-          <p class="text-xs font-['DM_Sans'] leading-relaxed opacity-70">
-            Strategic systems for organizations that demand clarity, structure, and operational control.
-          </p>
+      <!-- Consolidated Footer -->
+      <footer class="w-full border-t border-foreground/20">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div class="col-span-1">
+              <h3 class="font-display text-lg font-bold uppercase mb-2">The Control Room</h3>
+              <p class="text-xs font-body text-muted-foreground leading-relaxed">
+                Strategic systems for organizations that demand clarity, structure, and operational control.
+              </p>
+              <p class="text-xs font-body text-muted-foreground leading-relaxed mt-2">
+                Building systems that matter.
+              </p>
+            </div>
+            <div class="col-span-1">
+              <h4 class="font-mono-custom text-[10px] tracking-widest uppercase mb-3 font-semibold">Navigation</h4>
+              <div class="space-y-1 text-xs font-body text-muted-foreground">
+                <p><a href="how-we-work.html" class="hover:text-foreground cursor-pointer transition-colors">How we Work</a></p>
+                <p><a href="hiring.html" class="hover:text-foreground cursor-pointer transition-colors">Hiring</a></p>
+                <p><a href="archives.html" class="hover:text-foreground cursor-pointer transition-colors">Archives</a></p>
+              </div>
+            </div>
+            <div class="col-span-1">
+              <h4 class="font-mono-custom text-[10px] tracking-widest uppercase mb-3 font-semibold">Visibility</h4>
+              <div class="space-y-1 text-xs font-body text-muted-foreground">
+                <p class="hover:text-foreground cursor-pointer transition-colors">LinkedIn</p>
+                <p class="hover:text-foreground cursor-pointer transition-colors">Twitter / X</p>
+                <p class="hover:text-foreground cursor-pointer transition-colors">Instagram</p>
+                <p class="hover:text-foreground cursor-pointer transition-colors">Facebook</p>
+              </div>
+            </div>
+            <div class="col-span-1">
+              <h4 class="font-mono-custom text-[10px] tracking-widest uppercase mb-3 font-semibold">Contact</h4>
+              <div class="space-y-1 text-xs font-body text-muted-foreground">
+                <p>+91 7879 186506</p>
+                <p>thecontrolroom.agency@gmail.com</p>
+                <p>Mumbai</p>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-foreground/20 pt-4">
+            <p class="font-mono-custom text-[10px] tracking-widest uppercase text-muted-foreground text-center">
+              © 2027 THE CONTROL ROOM. ALL RIGHTS RESERVED.
+            </p>
+          </div>
         </div>
-        <div class="p-6 md:p-8">
-          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Navigation</h4>
-          <ul class="text-xs font-mono space-y-2 uppercase tracking-wider">
-            <li>
-              <a href="archives.html" class="hover:opacity-70 transition-opacity">
-                Archives
-              </a>
-            </li>
-            <li>
-              <a href="how-we-work.html" class="hover:opacity-70 transition-opacity">
-                How We Work
-              </a>
-            </li>
-            <li>
-              <a href="#book-appointment" class="hover:opacity-70 transition-opacity uppercase tracking-wider">
-                Book an Appointment
-              </a>
-            </li>
-          </ul>
+      </footer>
         </div>
-        <div class="p-6 md:p-8">
-          <h4 class="text-[10px] font-mono tracking-widest uppercase mb-3">Contact</h4>
-          <ul class="text-xs font-mono space-y-1 tracking-wider">
-            <li>+91 7879 186506</li>
-            <li>thecontrolroom.agency@gmail.com</li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t border-[hsl(0,0%,8%)] px-6 md:px-8 py-4">
-        <p class="text-[10px] font-mono tracking-widest uppercase text-center opacity-60">
-          © 2026 THE CONTROL ROOM. ALL RIGHTS RESERVED.
-        </p>
-      </div>
-    </footer>
-
   </div>
 
-  <script>
-    // ============================================
-    // REAL-TIME CLOCK
-    // ============================================
+  <!-- Night Services Template (6 automation services) -->
+  <div id="night-services-template" style="display: none;">
+    <!-- Automation Infrastructure -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div class="py-8 md:py-12">
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Automation Infrastructure</h3>
+          <div class="space-y-4 text-sm font-body">
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+              <p class="text-muted-foreground">Manual, slow, error-prone and repetitive tasks.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+              <p class="text-muted-foreground">End-to-end automation workflows for business operations.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+              <p class="text-muted-foreground">Time-back. Reduced costs. Multiplied efficiency.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+              <ul class="text-muted-foreground space-y-1">
+                <li>• Zero-touch processes</li>
+                <li>• Friction-free workflow</li>
+                <li>• Scale 10x. Same payroll.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="automation">View Case Study</button>
+            <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+          <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format" alt="Automation Infrastructure" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Automation</span>'">
+        </div>
+      </div>
+    </section>
+
+    <!-- Lead Capture Systems -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format" alt="Lead Capture Systems" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Lead Capture</span>'">
+        </div>
+        <div class="py-8 md:py-12">
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Lead Capture Systems</h3>
+          <div class="space-y-4 text-sm font-body">
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+              <p class="text-muted-foreground">Your traffic is dead. Leads vanish daily.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+              <p class="text-muted-foreground">Automated top-of-funnel with multi-stage capture & qualifying tools.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+              <p class="text-muted-foreground">No lead is potentially lost. Every visitor is an asset.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+              <ul class="text-muted-foreground space-y-1">
+                <li>• Inbound lead funnel</li>
+                <li>• AI-driven follow-up</li>
+                <li>• Automatic tracking by 95%</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="lead-capture">View Case Study</button>
+            <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRM Pipelines -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div class="py-8 md:py-12">
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">CRM Pipelines</h3>
+          <div class="space-y-4 text-sm font-body">
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+              <p class="text-muted-foreground">Sales are tracked in flat-file and Slack messages.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+              <p class="text-muted-foreground">Visual full pipeline for clients, revenue, deals and outreach.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+              <p class="text-muted-foreground">One centralized, Fast-track data. Clean reporting.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+              <ul class="text-muted-foreground space-y-1">
+                <li>• Pipeline transparency</li>
+                <li>• Client categorization</li>
+                <li>• Revenue forecasting</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="crm">View Case Study</button>
+            <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format" alt="CRM Pipelines" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>CRM</span>'">
+        </div>
+      </div>
+    </section>
+
+    <!-- Internal Workflow Automation -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format" alt="Internal Workflow" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>Workflow</span>'">
+        </div>
+        <div class="py-8 md:py-12">
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Internal Workflow Automation</h3>
+          <div class="space-y-4 text-sm font-body">
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+              <p class="text-muted-foreground">Teams build in silos. Communication breaks down.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+              <p class="text-muted-foreground">Structured workflows that give your teams transparency.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+              <p class="text-muted-foreground">Teams are faster, sold. Tangibly. Well-oiled. Lean.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+              <ul class="text-muted-foreground space-y-1">
+                <li>• Task efficiency</li>
+                <li>• Reduce silos</li>
+                <li>• Log-level auditing</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="workflow">View Case Study</button>
+            <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom AI Tools -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div class="py-8 md:py-12">
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-6">Custom AI Tools</h3>
+          <div class="space-y-4 text-sm font-body">
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+              <p class="text-muted-foreground">Your firm relies on legacy, manual systems.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">System</p>
+              <p class="text-muted-foreground">AI-backed enterprise AI tools and automation-complete solutions.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Result</p>
+              <p class="text-muted-foreground">Actual margin. Search-first data, Insights on tap.</p>
+            </div>
+            <div>
+              <p class="font-mono-custom text-[10px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+              <ul class="text-muted-foreground space-y-1">
+                <li>• Context-first flow</li>
+                <li>• Predict outcomes</li>
+                <li>• AI-driven auditing</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn-warm-outline text-[10px] py-2 px-4 view-case-study" data-case="ai">View Case Study</button>
+            <button class="btn-warm-outline text-[10px] py-2 px-4 start-proposal-btn">Start Proposal</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-center bg-secondary/60 aspect-[4/3] md:aspect-auto md:h-full">
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format" alt="AI Tools" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-mono-custom text-xs text-muted-foreground uppercase tracking-widest\'>AI Tools</span>'">
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Dashboards -->
+    <section class="w-full border-b border-foreground/10 px-4 md:px-8">
+      ...
+    </section>
+
+    <!-- Service Packages Section (Night Mode - Tech Focus) -->
+    <section id="case-studies" class="w-full py-16 px-4 md:px-8 border-b border-foreground/10">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-12">
+          Tech Service Packages
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- API Integration Package -->
+          <div class="border border-foreground/20 p-5 flex flex-col">
+            <h4 class="font-display text-base font-bold mb-3 italic">API Integration</h4>
+            <div class="text-[11px] font-body space-y-3 flex-1">
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                <p class="text-muted-foreground leading-relaxed">Disconnected systems, manual data transfer, workflow gaps.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                <p class="text-muted-foreground leading-relaxed">Custom API connections that sync your entire tech stack automatically.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                <ul class="text-muted-foreground space-y-0.5">
+                  <li>• Real-time data sync</li>
+                  <li>• Eliminate manual entry</li>
+                  <li>• Unified system view</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="api-integration">View Case Study</button>
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+            </div>
+          </div>
+
+          <!-- Cloud Infrastructure -->
+          <div class="border border-foreground/20 p-5 flex flex-col">
+            <h4 class="font-display text-base font-bold mb-3 italic">Cloud Infrastructure</h4>
+            <div class="text-[11px] font-body space-y-3 flex-1">
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                <p class="text-muted-foreground leading-relaxed">Legacy servers, scaling issues, security vulnerabilities.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                <p class="text-muted-foreground leading-relaxed">Scalable cloud architecture with enterprise-grade security.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                <ul class="text-muted-foreground space-y-0.5">
+                  <li>• 99.9% uptime</li>
+                  <li>• Auto-scaling</li>
+                  <li>• Reduced infrastructure costs</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="cloud-infrastructure">View Case Study</button>
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+            </div>
+          </div>
+
+          <!-- Data Pipeline Automation -->
+          <div class="border border-foreground/20 p-5 flex flex-col">
+            <h4 class="font-display text-base font-bold mb-3 italic">Data Pipeline</h4>
+            <div class="text-[11px] font-body space-y-3 flex-1">
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                <p class="text-muted-foreground leading-relaxed">Data silos, delayed reporting, inconsistent metrics.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                <p class="text-muted-foreground leading-relaxed">Automated ETL pipelines that clean and transform data in real-time.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                <ul class="text-muted-foreground space-y-0.5">
+                  <li>• Real-time analytics</li>
+                  <li>• Single source of truth</li>
+                  <li>• Automated reporting</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="data-pipeline">View Case Study</button>
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+            </div>
+          </div>
+
+          <!-- DevOps Automation -->
+          <div class="border border-foreground/20 p-5 flex flex-col">
+            <h4 class="font-display text-base font-bold mb-3 italic">DevOps Automation</h4>
+            <div class="text-[11px] font-body space-y-3 flex-1">
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                <p class="text-muted-foreground leading-relaxed">Slow deployments, manual testing, environment inconsistency.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                <p class="text-muted-foreground leading-relaxed">CI/CD pipelines with automated testing and deployment.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                <ul class="text-muted-foreground space-y-0.5">
+                  <li>• Deploy 10x faster</li>
+                  <li>• Zero-downtime updates</li>
+                  <li>• Automated rollbacks</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="devops">View Case Study</button>
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+            </div>
+          </div>
+
+          <!-- Security Automation -->
+          <div class="border border-foreground/20 p-5 flex flex-col">
+            <h4 class="font-display text-base font-bold mb-3 italic">Security Automation</h4>
+            <div class="text-[11px] font-body space-y-3 flex-1">
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Problem</p>
+                <p class="text-muted-foreground leading-relaxed">Security vulnerabilities, compliance risks, manual audits.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">System</p>
+                <p class="text-muted-foreground leading-relaxed">Automated security monitoring, threat detection, and compliance checks.</p>
+              </div>
+              <div>
+                <p class="font-mono-custom text-[9px] tracking-widest uppercase font-semibold mb-1">Outcomes</p>
+                <ul class="text-muted-foreground space-y-0.5">
+                  <li>• Real-time threat detection</li>
+                  <li>• Automated compliance</li>
+                  <li>• Security audit trails</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 view-case-study" data-case="security">View Case Study</button>
+              <button class="btn-warm text-[9px] py-2 px-3 flex-1 start-proposal-btn">Start Proposal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div> <!-- This closing div belongs to night-services-template -->
+
+<script>
+    // Real-time clock
     function updateClock() {
       const now = new Date();
-      const formatted = now.toLocaleString('en-US', {
+      const options = {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: '2-digit',
+        day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: true
-      }).toUpperCase();
-      
-      document.getElementById('live-clock').textContent = formatted;
+        hour12: true,
+        timeZoneName: 'short'
+      };
+      const formatted = now.toLocaleString('en-US', options).toUpperCase();
+      document.getElementById('live-clock').textContent = `TODAY: ${formatted}`;
     }
     
-    // Update immediately
     updateClock();
-    
-    // Update every second
     setInterval(updateClock, 1000);
+
+    // Store the original alternative services HTML
+    let originalServicesHTML = '';
+
+    // Case study data
+    const caseStudies = {
+      // Day mode cases
+      'content-only': {
+        title: 'Content Only Package Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Content Only Success Story</h2>
+          <p class="mb-4">A professional services firm needed to establish thought leadership but lacked internal resources.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Their website was static, blog was empty, and they were invisible in search results.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We provided strategic written content including blog posts, whitepapers, and website copy optimized for SEO.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>250% increase in organic traffic</li>
+            <li>Ranked #1 for 15 key industry terms</li>
+            <li>40+ qualified inquiries per month</li>
+          </ul>
+        `
+      },
+      'video-only': {
+        title: 'Video Only Package Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Video Only Success Story</h2>
+          <p class="mb-4">A nonprofit organization needed to communicate their mission compellingly to attract donors.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Their impact stories were getting lost in text-heavy reports.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We produced emotional, cinematic videos featuring the people they help and the difference donors make.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>300% increase in donation page views</li>
+            <li>Videos shared by major influencers</li>
+            <li>Annual fundraising goal exceeded by 150%</li>
+          </ul>
+        `
+      },
+      'social-media': {
+        title: 'Social Media Engine Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Social Media Engine Success Story</h2>
+          <p class="mb-4">A local restaurant chain wanted to build a loyal following and drive foot traffic.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Their social presence was sporadic and didn't reflect their vibrant brand personality.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We implemented a daily content calendar with mouth-watering food photography, customer spotlights, and local engagement.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>500% increase in social engagement</li>
+            <li>20% increase in foot traffic attributed to social</li>
+            <li>Featured in local "best of" lists</li>
+          </ul>
+        `
+      },
+      'launch': {
+        title: 'Launch Campaigns Package Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Launch Campaigns Success Story</h2>
+          <p class="mb-4">An e-commerce brand was launching a new product line and needed maximum visibility.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">They had only 30 days until launch and zero marketing assets prepared.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We created a complete launch package including social content, email sequences, and influencer outreach.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Launch day sold out in 4 hours</li>
+            <li>100+ media mentions</li>
+            <li>Waitlist of 5000+ for next release</li>
+          </ul>
+        `
+      },
+      'full-visibility': {
+        title: 'Full Visibility System Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Full Visibility System Success Story</h2>
+          <p class="mb-4">A multinational corporation needed to transform their entire marketing and operational infrastructure.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">They had siloed departments, inconsistent branding, and no unified view of customer data.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We implemented a comprehensive system including CRM integration, automated workflows, and unified content strategy.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>40% reduction in operational costs</li>
+            <li>Unified customer view across all touchpoints</li>
+            <li>300% ROI within first year</li>
+          </ul>
+        `
+      },
+      
+      // Night mode cases
+      'automation': {
+        title: 'Automation Infrastructure Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Automation Infrastructure Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format" alt="Automation" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A logistics company was drowning in manual data entry and repetitive tasks.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Their team spent 30+ hours per week on manual data entry, leading to errors and burnout.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We built custom automation workflows that eliminated manual data entry and integrated their systems.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>40+ hours saved per week</li>
+            <li>99.9% reduction in data entry errors</li>
+            <li>ROI achieved in 3 months</li>
+          </ul>
+        `
+      },
+      'lead-capture': {
+        title: 'Lead Capture Systems Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Lead Capture Systems Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&auto=format" alt="Lead Capture" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A B2B software company was losing 70% of their leads due to slow response times.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Leads were coming in through multiple channels but getting lost or responded to days later.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We implemented an automated lead capture and qualification system with instant responses and smart routing.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>95% of leads contacted within 5 minutes</li>
+            <li>40% increase in conversion rate</li>
+            <li>$2M in additional revenue</li>
+          </ul>
+        `
+      },
+      'crm': {
+        title: 'CRM Pipelines Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">CRM Pipelines Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format" alt="CRM" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A real estate agency was tracking deals in spreadsheets and losing opportunities.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">No visibility into pipeline, inconsistent follow-up, and inability to forecast revenue.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We built a custom CRM pipeline with automated tracking, follow-up reminders, and forecasting tools.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>50% reduction in sales cycle</li>
+            <li>95% forecast accuracy</li>
+            <li>30% increase in deal size</li>
+          </ul>
+        `
+      },
+      'workflow': {
+        title: 'Internal Workflow Automation Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Internal Workflow Automation Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&auto=format" alt="Workflow" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A marketing agency had teams working in silos with constant communication breakdowns.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Projects were delayed, information was lost, and team morale was suffering.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We implemented integrated workflow automation that connected all departments and streamlined approvals.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>60% faster project completion</li>
+            <li>Zero projects missed deadline</li>
+            <li>Team satisfaction increased by 80%</li>
+          </ul>
+        `
+      },
+      'ai': {
+        title: 'Custom AI Tools Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Custom AI Tools Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&auto=format" alt="AI Tools" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A financial services firm needed to analyze thousands of documents daily.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Manual analysis was taking weeks and missing critical insights.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We built custom AI tools that automated document analysis and surfaced actionable insights in real-time.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Analysis time reduced from weeks to minutes</li>
+            <li>95% accuracy in pattern detection</li>
+            <li>$5M in cost savings annually</li>
+          </ul>
+        `
+      },
+      'dashboard': {
+        title: 'Data Dashboards Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Data Dashboards Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format" alt="Dashboard" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A retail chain had data scattered across 12 different systems with no unified view.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Challenge</h3>
+          <p class="mb-4">Executives couldn't get accurate, real-time information for decision making.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Our Solution</h3>
+          <p class="mb-4">We created a centralized dashboard that pulled data from all systems and presented it in real-time.</p>
+          <h3 class="font-display text-xl font-bold mb-2">The Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Single source of truth for all metrics</li>
+            <li>Decision-making time reduced by 70%</li>
+            <li>Identified $2M in cost savings</li>
+          </ul>
+        `
+      },
+      // New alternative services cases
+      'content-engine': {
+        title: 'Content Engine Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Content Engine Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=600&auto=format" alt="Content Engine" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A B2B technology company transformed their online presence with strategic content.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>300% increase in organic traffic</li>
+            <li>150+ qualified leads per month</li>
+            <li>Featured in major publications</li>
+          </ul>
+        `
+      },
+      'video-production': {
+        title: 'Video Production Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Video Production Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1492618195919-5c7e7d6e2f8c?w=600&auto=format" alt="Video" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A luxury real estate developer used video to showcase properties.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>85% increase in inquiries</li>
+            <li>500+ social shares</li>
+            <li>3 properties sold directly from video</li>
+          </ul>
+        `
+      },
+      'social-media-presence': {
+        title: 'Social Media Presence Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Social Media Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&auto=format" alt="Social" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A D2C brand built their community from zero.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>100K+ followers in 6 months</li>
+            <li>15% conversion rate</li>
+            <li>1000+ user-generated posts</li>
+          </ul>
+        `
+      },
+      'brand-story': {
+        title: 'Brand Story Development Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Brand Story Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&auto=format" alt="Brand" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A heritage manufacturer connected with younger audiences.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>40% increase in engagement</li>
+            <li>Featured in lifestyle publications</li>
+            <li>25% new customer growth</li>
+          </ul>
+        `
+      },
+      'service-packages': {
+        title: 'Service Packages Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Service Packages Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&auto=format" alt="Packages" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A tech startup used our full package for their launch.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Sold out in 4 hours</li>
+            <li>100+ media mentions</li>
+            <li>5000+ waitlist</li>
+          </ul>
+        `
+      },
+      // New tech service package cases for night mode
+      'api-integration': {
+        title: 'API Integration Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">API Integration Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format" alt="API" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A logistics company had 5 disconnected systems requiring manual data entry. We built custom APIs that connected their CRM, warehouse management, and billing systems.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>40+ hours saved per week</li>
+            <li>99.9% reduction in data errors</li>
+            <li>Real-time inventory tracking</li>
+          </ul>
+        `
+      },
+      'cloud-infrastructure': {
+        title: 'Cloud Infrastructure Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Cloud Infrastructure Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format" alt="Cloud" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A fast-growing SaaS company was struggling with server downtime and scaling issues during peak usage.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>99.99% uptime achieved</li>
+            <li>Auto-scaling handles 10x traffic</li>
+            <li>40% reduction in infrastructure costs</li>
+          </ul>
+        `
+      },
+      'data-pipeline': {
+        title: 'Data Pipeline Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Data Pipeline Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format" alt="Data" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">An e-commerce company had data scattered across 12 sources with delayed reporting.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Real-time analytics dashboard</li>
+            <li>Reports generated in seconds</li>
+            <li>Single source of truth for all metrics</li>
+          </ul>
+        `
+      },
+      'devops': {
+        title: 'DevOps Automation Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">DevOps Automation Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=600&auto=format" alt="DevOps" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A development team was taking 3 days to deploy updates with frequent errors.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Deployments in under 10 minutes</li>
+            <li>Zero failed deployments</li>
+            <li>Developer productivity up 200%</li>
+          </ul>
+        `
+      },
+      'security': {
+        title: 'Security Automation Case Study',
+        content: `
+          <h2 class="font-display text-2xl font-bold mb-4">Security Automation Success Story</h2>
+          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format" alt="Security" class="w-full h-48 object-cover mb-4">
+          <p class="mb-4">A financial services firm needed to meet strict compliance requirements.</p>
+          <h3 class="font-display text-xl font-bold mb-2">Results</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Automated compliance reporting</li>
+            <li>Real-time threat detection</li>
+            <li>Passed audits with zero findings</li>
+          </ul>
+        `
+      }
+    };
+
+    // Modal functionality
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+
+    function openModal(caseId) {
+      const caseData = caseStudies[caseId];
+      if (caseData) {
+        modalBody.innerHTML = caseData.content;
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    // Theme toggle functionality with content switching
+    const themeToggle = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+    const dayServicesTemplate = document.getElementById('day-services-template');
+    const nightServicesTemplate = document.getElementById('night-services-template');
+    const servicesContainer = document.getElementById('services-container');
+    const servicePackages = document.getElementById('service-packages');
+    
+// Check for saved theme preference
+const savedTheme = localStorage.getItem('theme');
+
+// Store the original services HTML
+if (servicesContainer) {
+  originalServicesHTML = servicesContainer.innerHTML;
+}
+
+if (savedTheme === 'dark') {
+  root.classList.add('dark');
+  // Set slider to right position
+  const toggleSlider = document.querySelector('#theme-toggle span');
+  if (toggleSlider) {
+    toggleSlider.style.transform = 'translateX(32px)';
+  }
+  // Night mode: replace services-container with night template, hide day service packages
+  if (servicesContainer && nightServicesTemplate) {
+    servicesContainer.innerHTML = nightServicesTemplate.innerHTML;
+    servicePackages.style.display = 'none';
+  }
+} else {
+  // Set slider to left position (default)
+  const toggleSlider = document.querySelector('#theme-toggle span');
+  if (toggleSlider) {
+    toggleSlider.style.transform = 'translateX(0)';
+  }
+  // Day mode: keep the original content in services-container (your alternative services),
+  // and show the day service packages
+  servicePackages.style.display = 'block';
+}
+
+function toggleTheme() {
+  root.classList.toggle('dark');
+  const isDark = root.classList.contains('dark');
+  
+  // Save preference
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  
+  // Update toggle button - move the slider
+  const toggleSlider = document.querySelector('#theme-toggle span');
+  if (toggleSlider) {
+    if (isDark) {
+      toggleSlider.style.transform = 'translateX(32px)';
+    } else {
+      toggleSlider.style.transform = 'translateX(0)';
+    }
+  }
+  
+  // Switch content based on theme
+  if (servicesContainer) {
+    if (isDark) {
+      // Night mode: replace with night template, hide day service packages
+      servicesContainer.innerHTML = nightServicesTemplate.innerHTML;
+      servicePackages.style.display = 'none';
+    } else {
+      // Day mode: restore original services HTML, show day service packages
+      servicesContainer.innerHTML = originalServicesHTML;
+      servicePackages.style.display = 'block';
+    }
+  }
+  
+  // Reattach case study listeners
+  attachCaseStudyListeners();
+}
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Attach case study listeners to all view case study buttons
+    function attachCaseStudyListeners() {
+      document.querySelectorAll('.view-case-study').forEach(button => {
+        button.removeEventListener('click', handleCaseStudyClick);
+        button.addEventListener('click', handleCaseStudyClick);
+      });
+      
+      // Attach start proposal buttons to scroll to form
+      document.querySelectorAll('.start-proposal-btn').forEach(button => {
+        button.removeEventListener('click', scrollToProposal);
+        button.addEventListener('click', scrollToProposal);
+      });
+    }
+    
+    function scrollToProposal(e) {
+      e.preventDefault();
+      document.getElementById('start-proposal').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleCaseStudyClick(e) {
+      e.preventDefault();
+      const caseId = e.target.getAttribute('data-case');
+      if (caseId) {
+        openModal(caseId);
+      }
+    }
+
+    // Initial attachment of case study listeners
+    setTimeout(attachCaseStudyListeners, 100);
+
+// Demo functionality for other buttons
+document.addEventListener('click', function(e) {
+  const button = e.target.closest('button');
+  if (!button) return;
+  
+  // Skip if it's a case study button (already handled)
+  if (button.classList.contains('view-case-study') || button.classList.contains('start-proposal-btn')) return;
+  
+  // Check if the button is inside an anchor tag
+  const parentAnchor = button.closest('a');
+  if (parentAnchor && parentAnchor.getAttribute('href')) {
+    // Let the anchor tag handle the navigation
+    return;
+  }
+  
+  if (button.closest('.space-y-3') || button.closest('.space-y-4')) {
+    e.preventDefault();
+    alert('Form submitted! (Demo)');
+  } else if (button.textContent.includes('Start Proposal') && !button.classList.contains('start-proposal-btn')) {
+    e.preventDefault();
+    scrollToProposal(e);
+  } else if (button.textContent.includes('Explore')) {
+    e.preventDefault();
+    alert('Navigation would happen here (Demo)');
+  } else if (button.textContent.includes('We Are Hiring')) {
+    e.preventDefault();
+    window.location.href = 'hiring.html';
+  } else if (button.textContent.includes('Submit Inquiry')) {
+    e.preventDefault();
+    alert('Inquiry submitted! (Demo)');
+  } else if (button.textContent.includes('Send Proposal Request')) {
+    e.preventDefault();
+    alert('Proposal request sent! (Demo)');
+  } else if (button.textContent.includes('Explore All Issues')) {
+    e.preventDefault();
+    alert('Archives would open here (Demo)');
+  }
+});
+
+// Add click handlers for navigation items
+document.querySelectorAll('.cursor-pointer, .hover\\:text-foreground').forEach(element => {
+  if (!element.closest('button')) {
+    element.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Get the text content and href
+      const text = this.textContent.replace('•', '').trim();
+      const href = this.getAttribute('href');
+      
+      // Handle hash links (smooth scroll)
+      if (href && href.startsWith('#')) {
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+        return;
+      }
+      
+      // Handle external/page links
+      if (href && !href.startsWith('#')) {
+        window.location.href = href;
+        return;
+      }
+      
+      // Handle Navigation links (fallback)
+      if (text.includes('HOW WE WORK')) {
+        window.location.href = 'how-we-work.html';
+      } else if (text.includes('ARCHIVES')) {
+        window.location.href = 'archives.html';
+      }
+      // Handle Appointment links
+      else if (text.includes('START YOUR PROPOSAL')) {
+        document.getElementById('start-proposal').scrollIntoView({ behavior: 'smooth' });
+      } else if (text.includes('SCHEDULE A CONSULTATION')) {
+        document.getElementById('submit-inquiry').scrollIntoView({ behavior: 'smooth' });
+      }
+      // Handle Our Work links
+      else if (text.includes('CASE STUDIES')) {
+        document.getElementById('case-studies').scrollIntoView({ behavior: 'smooth' });
+      }
+      // Handle Visibility links
+      else if (text.includes('LinkedIn')) {
+        window.open('https://linkedin.com', '_blank');
+      } else if (text.includes('Twitter')) {
+        window.open('https://twitter.com', '_blank');
+      } else if (text.includes('Instagram')) {
+        window.open('https://instagram.com', '_blank');
+      } else if (text.includes('Facebook')) {
+        window.open('https://facebook.com', '_blank');
+      }
+    });
+  }
+});
+
+    // Escape key to close modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        closeModal();
+      }
+    });
   </script>
 </body>
 </html>
